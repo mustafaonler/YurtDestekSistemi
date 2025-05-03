@@ -1,0 +1,7 @@
+{
+    "json.schemas": [],
+    "json.validate.enable": false,
+    "files.associations": {
+        "*.json": "jsonc"
+    }
+} 
