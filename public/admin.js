@@ -1,13 +1,7 @@
 // Supabase bağlantısı
 const supabaseUrl = 'https://ymmfzxmvddrwkqspmptl.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InltbWZ6eG12ZGRyd2txc3BtcHRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUzOTk0NTgsImV4cCI6MjA2MDk3NTQ1OH0.W4YE-T2UifvFMtERULUcNdLcIfL0mJQ4ZwQqR2xqguI';
-const supabase = supabase.createClient(supabaseUrl, supabaseKey, {
-    auth: {
-        autoRefreshToken: true,
-        persistSession: true,
-        detectSessionInUrl: true
-    }
-});
+const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
 
 // DOM Elements
 const adminAuthContainer = document.getElementById('admin-auth-container');
@@ -26,15 +20,19 @@ adminLoginForm.addEventListener('submit', async (e) => {
 
     try {
         // Önce kullanıcı adını kontrol edelim
-        const { data: userData, error: userError } = await window.supabase
+        const { data: userData, error: userError } = await supabaseClient
             .from('admins')
             .select('*')
             .eq('username', username)
             .single();
 
         if (userError) {
-            console.error('Veritabanı hatası:', userError);
-            showNotification('Kullanıcı adı veya şifre hatalı!', 'error');
+            if (userError.code === 'PGRST116') {
+                showNotification('Kullanıcı adı veya şifre hatalı!', 'error');
+            } else {
+                console.error('Veritabanı hatası:', userError);
+                showNotification('Bir hata oluştu! Lütfen tekrar deneyin.', 'error');
+            }
             return;
         }
 
@@ -44,8 +42,6 @@ adminLoginForm.addEventListener('submit', async (e) => {
             showAdminPanel();
             loadComplaints();
             showNotification('Giriş başarılı!', 'success');
-            // Talep sayfasına yönlendir
-            window.location.href = '/admin.html#complaints';
         } else {
             showNotification('Kullanıcı adı veya şifre hatalı!', 'error');
         }
@@ -62,7 +58,7 @@ async function loadComplaints() {
         const categoryFilter = document.getElementById('categoryFilter').value;
         const statusFilter = document.getElementById('statusFilter').value;
 
-        let query = supabase
+        let query = supabaseClient
             .from('complaints')
             .select(`
                 *,
@@ -304,14 +300,11 @@ adminLogoutBtn.addEventListener('click', () => {
 
 // Sayfa yüklendiğinde talepleri yükle
 document.addEventListener('DOMContentLoaded', () => {
+    // Admin girişi kontrolü
     const admin = localStorage.getItem('admin');
     if (admin) {
         showAdminPanel();
         loadComplaints();
-        // URL'de complaints hash'i varsa talep sayfasını göster
-        if (window.location.hash === '#complaints') {
-            document.getElementById('complaints-tab').click();
-        }
     }
 });
 
@@ -324,7 +317,7 @@ async function updateStatus(complaintId, newStatus) {
             return;
         }
 
-        const { error } = await supabase
+        const { error } = await supabaseClient
             .from('complaints')
             .update({ status: newStatus })
             .eq('id', complaintId);
@@ -346,7 +339,7 @@ async function deleteComplaint(id) {
     }
 
     try {
-        const { error } = await supabase
+        const { error } = await supabaseClient
             .from('complaints')
             .delete()
             .eq('id', id);

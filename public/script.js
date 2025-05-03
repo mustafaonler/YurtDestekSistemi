@@ -14,7 +14,7 @@ const complaintTypeBtns = document.querySelectorAll('.complaint-type-btn');
 // Supabase bağlantısı
 const supabaseUrl = 'https://ymmfzxmvddrwkqspmptl.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InltbWZ6eG12ZGRyd2txc3BtcHRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUzOTk0NTgsImV4cCI6MjA2MDk3NTQ1OH0.W4YE-T2UifvFMtERULUcNdLcIfL0mJQ4ZwQqR2xqguI';
-const supabase = supabase.createClient(supabaseUrl, supabaseKey, {
+const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey, {
     auth: {
         autoRefreshToken: true,
         persistSession: true,
@@ -98,7 +98,7 @@ loginForm?.addEventListener('submit', async (e) => {
 
     try {
         // Önce öğrenciyi TC ve öğrenci numarasına göre ara
-        const { data: students, error: queryError } = await supabase
+        const { data: students, error: queryError } = await supabaseClient
             .from('students')
             .select('*')
             .eq('tc_no', tcNo)
@@ -159,7 +159,7 @@ registerForm?.addEventListener('submit', async (e) => {
     }
 
     try {
-        const { data: existingStudent } = await supabase
+        const { data: existingStudent } = await supabaseClient
             .from('students')
             .select('*')
             .or(`tc_no.eq.${tcNo},student_no.eq.${studentNo}`)
@@ -170,7 +170,7 @@ registerForm?.addEventListener('submit', async (e) => {
             return;
         }
 
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('students')
             .insert([{
                 tc_no: tcNo,
@@ -255,39 +255,30 @@ if (complaintForm) {
 // Submit Complaint
 async function submitComplaint(complaint) {
     try {
-        // Resim varsa ve base64 formatındaysa
-        if (complaint.image && complaint.image.startsWith('data:image')) {
-            // Resmi Supabase Storage'a yükle
-            const fileExt = complaint.image.split(';')[0].split('/')[1];
-            const fileName = `${Date.now()}.${fileExt}`;
-            
-            const { data: uploadData, error: uploadError } = await supabase.storage
-                .from('complaint-images')
-                .upload(fileName, complaint.image);
-
-            if (uploadError) throw uploadError;
-
-            // Resim URL'sini güncelle
-            const { data: { publicUrl } } = supabase.storage
-                .from('complaint-images')
-                .getPublicUrl(fileName);
-            
-            complaint.image = publicUrl;
-        }
-
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('complaints')
             .insert([complaint])
             .select();
 
-        if (error) throw error;
+        if (error) {
+            console.error('Talep gönderme hatası:', error);
+            alert('Talep gönderilemedi. Lütfen tekrar deneyin.');
+            return;
+        }
 
-        showNotification('Talep başarıyla gönderildi!', 'success');
+        alert('Talebiniz başarıyla gönderildi.');
         complaintForm.reset();
-        loadComplaints();
+        
+        const imagePreview = document.querySelector('#image-preview');
+        if (imagePreview) {
+            imagePreview.innerHTML = '';
+            imagePreview.classList.remove('active');
+        }
+        
+        await loadComplaints();
     } catch (error) {
         console.error('Talep gönderme hatası:', error);
-        showNotification('Talep gönderilirken bir hata oluştu!', 'error');
+        alert('Talep gönderilemedi. Lütfen tekrar deneyin.');
     }
 }
 
@@ -304,12 +295,9 @@ document.querySelectorAll('.complaint-type-btn').forEach(btn => {
 async function loadComplaints() {
     try {
         const student = JSON.parse(localStorage.getItem('student'));
-        if (!student) {
-            console.error('Öğrenci bilgisi bulunamadı');
-            return;
-        }
+        if (!student) return;
 
-        const { data: complaints, error } = await window.supabase
+        const { data: complaints, error } = await supabaseClient
             .from('complaints')
             .select('*')
             .eq('student_id', student.id)
@@ -385,12 +373,12 @@ function getStatusText(status) {
 document.addEventListener('DOMContentLoaded', () => {
     const student = localStorage.getItem('student');
     if (student) {
-        if (mainContainer) mainContainer.style.display = 'block';
-        if (authContainer) authContainer.style.display = 'none';
+        mainContainer.style.display = 'block';
+        authContainer.style.display = 'none';
         loadComplaints();
     } else {
-        if (mainContainer) mainContainer.style.display = 'none';
-        if (authContainer) authContainer.style.display = 'flex';
+        mainContainer.style.display = 'none';
+        authContainer.style.display = 'flex';
     }
 });
 
