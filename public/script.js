@@ -86,13 +86,15 @@ loginForm?.addEventListener('submit', async (e) => {
     const studentNo = document.querySelector('#login-student-no').value;
     const password = document.querySelector('#login-password').value;
 
-    if (!validateTC(tcNo)) {
-        alert('Geçerli bir TC Kimlik No giriniz!');
+    // TC Kimlik No kontrolü
+    if (tcNo.length !== 11 || !/^\d{11}$/.test(tcNo)) {
+        alert('TC Kimlik No 11 haneli olmalıdır!');
         return;
     }
 
-    if (!studentNo || !password) {
-        alert('Tüm alanları doldurunuz!');
+    // Öğrenci No kontrolü
+    if (studentNo.length !== 9 || !/^\d{9}$/.test(studentNo)) {
+        alert('Öğrenci No 9 haneli olmalıdır!');
         return;
     }
 
@@ -153,20 +155,28 @@ registerForm?.addEventListener('submit', async (e) => {
     const room = document.querySelector('#register-room').value;
     const password = document.querySelector('#register-password').value;
 
-    if (!validateTC(tcNo)) {
-        alert('Geçerli bir TC Kimlik No giriniz!');
+    // TC Kimlik No kontrolü
+    if (tcNo.length !== 11 || !/^\d{11}$/.test(tcNo)) {
+        alert('TC Kimlik No 11 haneli olmalıdır!');
+        return;
+    }
+
+    // Öğrenci No kontrolü
+    if (studentNo.length !== 9 || !/^\d{9}$/.test(studentNo)) {
+        alert('Öğrenci No 9 haneli olmalıdır!');
         return;
     }
 
     try {
-        const { data: existingStudent } = await supabaseClient
+        // TC Kimlik No kontrolü
+        const { data: existingTC } = await supabaseClient
             .from('students')
-            .select('*')
-            .or(`tc_no.eq.${tcNo},student_no.eq.${studentNo}`)
-            .maybeSingle();
+            .select('tc_no')
+            .eq('tc_no', tcNo)
+            .single();
 
-        if (existingStudent) {
-            alert('Bu TC Kimlik No veya Öğrenci No ile daha önce kayıt yapılmış!');
+        if (existingTC) {
+            alert('Bu TC Kimlik No ile daha önce kayıt yapılmış!');
             return;
         }
 
@@ -178,11 +188,19 @@ registerForm?.addEventListener('submit', async (e) => {
                 name: name,
                 surname: surname,
                 room_no: room,
-                password: password
-            }])
-            .select();
+                password: password,
+                created_at: new Date().toISOString()
+            }]);
 
-        if (error) throw error;
+        if (error) {
+            console.error('Kayıt hatası:', error);
+            if (error.code === '23505') {
+                alert('Bu TC Kimlik No veya Öğrenci No ile daha önce kayıt yapılmış!');
+            } else {
+                alert('Kayıt sırasında bir hata oluştu: ' + error.message);
+            }
+            return;
+        }
 
         alert('Kayıt başarılı! Giriş yapabilirsiniz.');
         registerForm.reset();
