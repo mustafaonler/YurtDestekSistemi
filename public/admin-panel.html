@@ -1,0 +1,1059 @@
+<div class="admin-panel-layout">
+    <div class="admin-panel-container">
+        <div class="tab-box">
+            <div class="tab-header">
+                <button class="tab-btn active" data-tab="complaints">Şikayetler & Arzlar</button>
+                <button class="tab-btn" data-tab="announcements">Duyurular</button>
+            </div>
+            <div id="complaints-tab" class="tab-content active">
+                <h2>Tüm Şikayet ve Arzlar</h2>
+                
+                <!-- Filtreleme Alanı -->
+                <div class="filter-container">
+                    <div class="filter-header">
+                        <h3>Filtreleme Seçenekleri</h3>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filter-type">Tür</label>
+                        <select id="filter-type" class="filter-select">
+                            <option value="all">Tümü</option>
+                            <option value="şikayet">Şikayet</option>
+                            <option value="arz">Arz</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="filter-status">Durum</label>
+                        <select id="filter-status" class="filter-select">
+                            <option value="all">Tümü</option>
+                            <option value="bekleniyor">Bekleniyor</option>
+                            <option value="ilgileniliyor">İlgileniliyor</option>
+                            <option value="tamamlandı">Tamamlandı</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="filter-category">Kategori</label>
+                        <select id="filter-category" class="filter-select">
+                            <option value="all">Tümü</option>
+                            <option value="temizlik">Temizlik</option>
+                            <option value="elektrik">elektrik</option>
+                            <option value="bakım">Bakım</option>
+                            <option value="güvenlik">Güvenlik</option>
+                            <option value="diğer">Diğer</option>
+                        </select>
+                    </div>
+                    
+                    <button id="reset-filters" class="btn-reset">Filtreleri Sıfırla</button>
+                </div>
+
+                <div id="complaints-list-admin"></div>
+            </div>
+            <div id="announcements-tab" class="tab-content">
+                <div class="announcement-form" style="background:#f6f8fa; border-radius:14px; box-shadow:0 2px 12px rgba(44,62,80,0.08); padding:28px 22px 18px 22px; max-width:480px; margin:0 auto 24px auto;">
+                    <h3 style="color:#159a8c; text-align:center; margin-bottom:18px;">Yeni Duyuru Ekle</h3>
+                    <form id="announcement-form">
+                        <div class="form-group">
+                            <label for="announcement-title">Başlık</label>
+                            <input type="text" id="announcement-title" required style="padding:12px 14px; border-radius:8px; border:1.5px solid #e0e0e0; font-size:1rem;">
+                        </div>
+                        <div class="form-group">
+                            <label for="announcement-content">İçerik</label>
+                            <textarea id="announcement-content" required style="padding:12px 14px; border-radius:8px; border:1.5px solid #e0e0e0; font-size:1rem; min-height:80px;"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="announcement-priority">Öncelik</label>
+                            <select id="announcement-priority" required style="padding:12px 14px; border-radius:8px; border:1.5px solid #e0e0e0; font-size:1rem;">
+                                <option value="low">Normal</option>
+                                <option value="medium">Önemli</option>
+                                <option value="high">Acil</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-primary" style="width:100%; background:linear-gradient(135deg,#4a90e2 0%,#2c3e50 100%); color:#fff; font-weight:700; font-size:1.1rem; border-radius:10px; padding:12px 0; margin-top:10px;">Duyuru Yayınla</button>
+                    </form>
+                </div>
+                <div class="announcements-list" id="announcements-list" style="max-width:600px; margin:0 auto;">
+                    <!-- Duyurular JavaScript ile buraya eklenecek -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dorm-gallery">
+        <div class="gallery-title">Yurt Görselleri</div>
+        <div class="gallery-images">
+            <div class="gallery-card">
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Kantin">
+                <div class="gallery-caption">Kantin</div>
+            </div>
+            <div class="gallery-card">
+                <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=400&q=80" alt="Spor Salonu">
+                <div class="gallery-caption">Spor Salonu</div>
+            </div>
+            <div class="gallery-card">
+                <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80" alt="Çalışma Salonu">
+                <div class="gallery-caption">Çalışma Salonu</div>
+            </div>
+            <div class="gallery-card">
+                <img src="https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=400&q=80" alt="Oda">
+                <div class="gallery-caption">Oda</div>
+            </div>
+            <div class="gallery-card">
+                <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80" alt="Yemekhane">
+                <div class="gallery-caption">Yemekhane</div>
+            </div>
+            <div class="gallery-card">
+                <img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=400&q=80" alt="Yurt Dış Görünümü">
+                <div class="gallery-caption">Yurt Dış Görünümü</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="logout-bar">
+    <button id="admin-logout-btn" class="logout-btn">Çıkış Yap</button>
+</div>
+
+<style>
+    body {
+        min-height: 100vh;
+        margin: 0;
+        font-family: 'Poppins', Arial, sans-serif;
+        background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url('https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .admin-panel-layout {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 32px;
+        width: 100vw;
+        min-height: 100vh;
+    }
+    .admin-panel-container {
+        max-width: 700px;
+        width: 100%;
+        margin: 0;
+        background: rgba(255,255,255,0.97);
+        border-radius: 22px;
+        box-shadow: 0 8px 32px rgba(44,62,80,0.18);
+        padding: 38px 32px 28px 32px;
+        position: relative;
+        z-index: 2;
+    }
+    .tab-header {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 24px;
+    }
+    .tab-content {
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .tab-content.active {
+        display: block;
+        opacity: 1;
+    }
+
+    .tab-btn {
+        flex: 1;
+        background: #f6f8fa;
+        border: none;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #159a8c;
+        padding: 16px 0 12px 0;
+        cursor: pointer;
+        border-radius: 12px 12px 0 0;
+        transition: all 0.3s ease;
+    }
+
+    .tab-btn.active {
+        background: #2ec4b6;
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(46,196,182,0.2);
+    }
+    h2 {
+        color: #159a8c;
+        font-size: 1.5rem;
+        margin-bottom: 18px;
+    }
+    #complaints-list-admin {
+        margin-top: 18px;
+    }
+    .complaint-card {
+        background: rgba(255,255,255,0.90);
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(44,62,80,0.12);
+        margin-bottom: 24px;
+        padding: 22px 20px;
+        position: relative;
+        transition: all 0.3s ease;
+        border-left: 4px solid;
+    }
+    .complaint-card.sikayet {
+        border-left-color: #c0392b;
+        background: linear-gradient(to right, rgba(192, 57, 43, 0.18), rgba(255,255,255,0.90));
+        box-shadow: 0 4px 20px rgba(192, 57, 43, 0.15);
+    }
+    .complaint-card.arz {
+        border-left-color: #27ae60;
+        background: linear-gradient(to right, rgba(39, 174, 96, 0.18), rgba(255,255,255,0.90));
+        box-shadow: 0 4px 20px rgba(39, 174, 96, 0.15);
+    }
+    .complaint-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 32px rgba(44,62,80,0.25);
+    }
+    .complaint-type {
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin-bottom: 12px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        display: inline-block;
+    }
+    .complaint-type.sikayet {
+        background: rgba(192, 57, 43, 0.25);
+        color: #c0392b;
+    }
+    .complaint-type.arz {
+        background: rgba(39, 174, 96, 0.25);
+        color: #27ae60;
+    }
+    .complaint-status-label {
+        position: absolute;
+        top: 18px;
+        right: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        border-radius: 8px;
+        padding: 8px 18px;
+        background: #f6f8fa;
+        color: #2c3e50;
+        box-shadow: 0 2px 8px rgba(44,62,80,0.1);
+    }
+    .complaint-status-label.bekleniyor {
+        background: rgba(211, 84, 0, 0.25);
+        color: #d35400;
+    }
+    .complaint-status-label.ilgileniliyor {
+        background: rgba(0, 148, 118, 0.25);
+        color: #009475;
+    }
+    .complaint-status-label.tamamlandı {
+        background: rgba(39, 174, 96, 0.25);
+        color: #27ae60;
+    }
+    .complaint-card b {
+        color: #2c3e50;
+    }
+    .complaint-card .complaint-meta {
+        font-size: 0.9rem;
+        color: #7f8c8d;
+        margin-top: 8px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+    .complaint-card .complaint-student {
+        margin-top: 12px;
+        padding: 14px;
+        background: rgba(248, 249, 250, 0.9);
+        border-radius: 8px;
+        color: #2c3e50;
+        font-size: 0.95rem;
+        border: 1px solid rgba(44,62,80,0.15);
+    }
+    .complaint-card .complaint-student b {
+        color: #2c3e50;
+    }
+    .complaint-card .status-row {
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(44,62,80,0.2);
+    }
+    .status-select {
+        padding: 10px 18px;
+        border-radius: 8px;
+        border: 2px solid #e0e0e0;
+        font-size: 0.95rem;
+        background: #ffffff;
+        color: #2c3e50;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    .status-select:focus {
+        border-color: #2ec4b6;
+        box-shadow: 0 0 0 3px rgba(46,196,182,0.2);
+        outline: none;
+    }
+    .btn-primary.save-status-btn {
+        background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.95rem;
+        border-radius: 8px;
+        padding: 10px 24px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(46,196,182,0.25);
+    }
+    .btn-primary.save-status-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(46,196,182,0.35);
+    }
+    .btn-primary.save-status-btn:active {
+        transform: translateY(0);
+    }
+    .complaint-card .complaint-image {
+        margin-top: 16px;
+        max-width: 200px;
+    }
+    .complaint-card .complaint-image img {
+        width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(44,62,80,0.2);
+        border: 1px solid rgba(44,62,80,0.15);
+    }
+    @media (max-width: 900px) {
+        .admin-panel-container { max-width: 98vw; padding: 10px 2vw; }
+    }
+
+    /* Duyuru Stilleri */
+    .announcement-item {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 2px 16px rgba(44,62,80,0.10);
+        margin-bottom: 24px;
+        padding: 22px 20px;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .announcement-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 32px rgba(44,62,80,0.16);
+    }
+
+    .announcement-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .announcement-content {
+        color: #34495e;
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 16px;
+        white-space: pre-wrap;
+    }
+
+    .announcement-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #7f8c8d;
+        font-size: 0.9rem;
+    }
+
+    .announcement-priority {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    .priority-high {
+        background: #ffe0e0;
+        color: #e74c3c;
+    }
+
+    .priority-medium {
+        background: #fff3cd;
+        color: #f39c12;
+    }
+
+    .priority-low {
+        background: #e0f7fa;
+        color: #00b894;
+    }
+
+    .announcement-actions {
+        margin-top: 16px;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .btn-delete {
+        background: #ff6b6b;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background 0.2s;
+    }
+
+    .btn-delete:hover {
+        background: #e74c3c;
+    }
+
+    .announcement-form {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 24px rgba(44,62,80,0.12);
+        padding: 28px;
+        margin-bottom: 32px;
+    }
+
+    .announcement-form h3 {
+        color: #2c3e50;
+        margin-bottom: 24px;
+        font-size: 1.4rem;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #2c3e50;
+        font-weight: 600;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        width: 100%;
+        padding: 12px;
+        border: 1.5px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+        border-color: #2ec4b6;
+        outline: none;
+    }
+
+    .form-group textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    /* Filtreleme Stilleri */
+    .filter-container {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 32px;
+        box-shadow: 0 4px 20px rgba(44,62,80,0.08);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        align-items: flex-end;
+        border: 1px solid rgba(46,196,182,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .filter-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #2ec4b6, #00b894);
+    }
+
+    .filter-group {
+        flex: 1;
+        min-width: 200px;
+        position: relative;
+    }
+
+    .filter-group label {
+        display: block;
+        margin-bottom: 10px;
+        color: #2c3e50;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .filter-select {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        color: #2c3e50;
+        background: #ffffff;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%232c3e50' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        background-size: 16px;
+        padding-right: 40px;
+    }
+
+    .filter-select:hover {
+        border-color: #2ec4b6;
+        box-shadow: 0 2px 8px rgba(46,196,182,0.1);
+    }
+
+    .filter-select:focus {
+        outline: none;
+        border-color: #2ec4b6;
+        box-shadow: 0 0 0 4px rgba(46,196,182,0.1);
+    }
+
+    .btn-reset {
+        background: #ffffff;
+        color: #2c3e50;
+        border: 2px solid #e0e0e0;
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 160px;
+        justify-content: center;
+    }
+
+    .btn-reset::before {
+        content: '';
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%232c3e50' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8'%3E%3C/path%3E%3Cpath d='M3 3v5h5'%3E%3C/path%3E%3C/svg%3E");
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+
+    .btn-reset:hover {
+        background: #f8f9fa;
+        border-color: #2ec4b6;
+        color: #2ec4b6;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(46,196,182,0.1);
+    }
+
+    .btn-reset:active {
+        transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+        .filter-container {
+            flex-direction: column;
+            padding: 20px;
+        }
+        .filter-group {
+            width: 100%;
+        }
+        .btn-reset {
+            width: 100%;
+        }
+    }
+
+    /* Filtreleme başlığı */
+    .filter-header {
+        width: 100%;
+        margin-bottom: 16px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid rgba(46,196,182,0.1);
+    }
+
+    .filter-header h3 {
+        color: #2c3e50;
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .filter-header h3::before {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%232ec4b6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3'%3E%3C/polygon%3E%3C/svg%3E");
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+
+    .complaint-card .complaint-category,
+    .complaint-card .complaint-description {
+        font-size: 1.13rem;
+        color: #111;
+        font-weight: 500;
+        margin: 8px 0 10px 0;
+        letter-spacing: 0.01em;
+        text-shadow: none;
+    }
+
+    .complaint-card .complaint-category b,
+    .complaint-card .complaint-description b {
+        color: #111 !important;
+    }
+
+    .dorm-gallery {
+        width: 320px;
+        background: rgba(44,62,80,0.97);
+        border-radius: 18px;
+        box-shadow: 0 8px 32px rgba(44,62,80,0.18);
+        padding: 22px 18px 18px 18px;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+    }
+    .gallery-title {
+        color: #fff;
+        font-size: 1.18rem;
+        font-weight: 700;
+        margin-bottom: 16px;
+        letter-spacing: 0.5px;
+    }
+    .gallery-images {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        width: 100%;
+    }
+    .gallery-card {
+        background: rgba(255,255,255,0.08);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 12px rgba(44,62,80,0.10);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .gallery-card:hover {
+        box-shadow: 0 8px 32px rgba(44,62,80,0.18);
+        transform: translateY(-2px) scale(1.03);
+    }
+    .gallery-card img {
+        width: 100%;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 12px 12px 0 0;
+    }
+    .gallery-caption {
+        color: #fff;
+        font-size: 1.05rem;
+        font-weight: 500;
+        padding: 10px 0 10px 0;
+        text-align: center;
+        background: rgba(44,62,80,0.7);
+        width: 100%;
+    }
+    @media (max-width: 1200px) {
+        .admin-panel-layout {
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+        }
+        .dorm-gallery {
+            width: 100%;
+            margin: 0;
+            box-shadow: 0 4px 16px rgba(44,62,80,0.12);
+        }
+        .gallery-images {
+            flex-direction: row;
+            gap: 18px;
+            justify-content: center;
+        }
+        .gallery-card {
+            width: 160px;
+        }
+    }
+    @media (max-width: 900px) {
+        .admin-panel-layout {
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+        }
+        .dorm-gallery {
+            width: 100%;
+            margin: 0;
+            box-shadow: 0 4px 16px rgba(44,62,80,0.12);
+        }
+        .gallery-images {
+            flex-direction: row;
+            gap: 12px;
+            justify-content: center;
+        }
+        .gallery-card {
+            width: 120px;
+        }
+        .gallery-card img {
+            height: 80px;
+        }
+    }
+
+    .logout-bar {
+        width: 100vw;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 18px 38px 0 0;
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 100;
+    }
+    .logout-btn {
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        color: #fff;
+        font-weight: 600;
+        font-size: 1rem;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 24px;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(231,76,60,0.15);
+        transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+    }
+    .logout-btn:hover {
+        background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+        box-shadow: 0 4px 16px rgba(231,76,60,0.18);
+        transform: translateY(-2px) scale(1.04);
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script>
+const supabaseUrl = 'https://ymmfzxmvddrwkqspmptl.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InltbWZ6eG12ZGRyd2txc3BtcHRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUzOTk0NTgsImV4cCI6MjA2MDk3NTQ1OH0.W4YE-T2UifvFMtERULUcNdLcIfL0mJQ4ZwQqR2xqguI';
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+function showAlert(message, success = true) {
+    // Önce eski alerti kaldır
+    const oldAlert = document.getElementById('custom-alert');
+    if (oldAlert) oldAlert.remove();
+
+    // Yeni alert oluştur
+    const alertDiv = document.createElement('div');
+    alertDiv.id = 'custom-alert';
+    alertDiv.textContent = message;
+    alertDiv.style.position = 'fixed';
+    alertDiv.style.top = '32px';
+    alertDiv.style.left = '50%';
+    alertDiv.style.transform = 'translateX(-50%)';
+    alertDiv.style.background = success ? '#27ae60' : '#e74c3c';
+    alertDiv.style.color = '#fff';
+    alertDiv.style.padding = '16px 32px';
+    alertDiv.style.borderRadius = '10px';
+    alertDiv.style.fontSize = '1.1rem';
+    alertDiv.style.zIndex = 9999;
+    alertDiv.style.boxShadow = '0 4px 24px rgba(44,62,80,0.18)';
+    document.body.appendChild(alertDiv);
+
+    setTimeout(() => {
+        alertDiv.remove();
+    }, 2500);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Sekme geçişleri
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    function switchTab(tabId) {
+        // Tüm tabları ve içerikleri deaktif yap
+        tabBtns.forEach(btn => btn.classList.remove('active'));
+        tabContents.forEach(content => content.classList.remove('active'));
+
+        // Seçilen tabı ve içeriğini aktif yap
+        const selectedBtn = document.querySelector(`[data-tab="${tabId}"]`);
+        const selectedContent = document.getElementById(`${tabId}-tab`);
+
+        if (selectedBtn && selectedContent) {
+            selectedBtn.classList.add('active');
+            selectedContent.classList.add('active');
+
+            // Eğer duyurular sekmesine geçildiyse duyuruları yeniden yükle
+            if (tabId === 'announcements') {
+                loadAnnouncements();
+            }
+        }
+    }
+
+    // Tab butonlarına tıklama olayı ekle
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            switchTab(this.dataset.tab);
+        });
+    });
+
+    // Sayfa yüklendiğinde varsayılan olarak şikayetler sekmesini göster
+    switchTab('complaints');
+
+    // Duyuru formu gönderimi
+    const announcementForm = document.getElementById('announcement-form');
+    announcementForm?.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const title = document.getElementById('announcement-title').value;
+        const content = document.getElementById('announcement-content').value;
+        const priority = document.getElementById('announcement-priority').value;
+        
+        try {
+            const { data, error } = await supabase
+                .from('announcements')
+                .insert([{
+                    title,
+                    content,
+                    priority,
+                    created_at: new Date().toISOString()
+                }]);
+            
+            if (error) throw error;
+            
+            showAlert('Duyuru başarıyla yayınlandı!', true);
+            announcementForm.reset();
+            loadAnnouncements();
+        } catch (err) {
+            showAlert('Duyuru yayınlanırken bir hata oluştu.', false);
+        }
+    });
+
+    // Duyuruları yükle
+    async function loadAnnouncements() {
+        const announcementsListDiv = document.getElementById('announcements-list');
+        
+        try {
+            const { data, error } = await supabase
+                .from('announcements')
+                .select('*')
+                .order('created_at', { ascending: false });
+            
+            if (error) throw error;
+            
+            if (!data || data.length === 0) {
+                announcementsListDiv.innerHTML = '<div style="text-align: center; color: #6c7a89; padding: 32px;">Henüz duyuru bulunmuyor.</div>';
+                return;
+            }
+            
+            announcementsListDiv.innerHTML = data.map(announcement => `
+                <div class="announcement-item">
+                    <div class="announcement-title">
+                        ${announcement.title}
+                        <span class="announcement-priority priority-${announcement.priority}">
+                            ${announcement.priority === 'high' ? 'Acil' : 
+                              announcement.priority === 'medium' ? 'Önemli' : 'Normal'}
+                        </span>
+                    </div>
+                    <div class="announcement-content">${announcement.content}</div>
+                    <div class="announcement-meta">
+                        <span>
+                            <i class="bi bi-calendar"></i> 
+                            ${new Date(announcement.created_at).toLocaleDateString('tr-TR')}
+                        </span>
+                        <button class="btn-delete" onclick="deleteAnnouncement(${announcement.id})">
+                            <i class="bi bi-trash"></i> Sil
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        } catch (err) {
+            announcementsListDiv.innerHTML = '<div style="text-align: center; color: #e74c3c; padding: 32px;">Duyurular yüklenirken bir hata oluştu.</div>';
+        }
+    }
+
+    // Duyuru silme fonksiyonu
+    window.deleteAnnouncement = async function(id) {
+        if (!confirm('Bu duyuruyu silmek istediğinizden emin misiniz?')) return;
+        
+        try {
+            const { error } = await supabase
+                .from('announcements')
+                .delete()
+                .eq('id', id);
+            
+            if (error) throw error;
+            
+            showAlert('Duyuru başarıyla silindi!', true);
+            loadAnnouncements();
+        } catch (err) {
+            showAlert('Duyuru silinirken bir hata oluştu.', false);
+        }
+    };
+
+    // Filtreleme fonksiyonları
+    let currentFilters = {
+        type: 'all',
+        status: 'all',
+        category: 'all'
+    };
+
+    function applyFilters(complaints) {
+        return complaints.filter(complaint => {
+            const typeMatch = currentFilters.type === 'all' || complaint.type === currentFilters.type;
+            const statusMatch = currentFilters.status === 'all' || complaint.status === currentFilters.status;
+            const categoryMatch = currentFilters.category === 'all' || complaint.category === currentFilters.category;
+            
+            return typeMatch && statusMatch && categoryMatch;
+        });
+    }
+
+    // Şikayet ve arzları yükle fonksiyonunu güncelle
+    async function loadComplaintsAdmin() {
+        const complaintsListDiv = document.getElementById('complaints-list-admin');
+        try {
+            const { data, error } = await supabase
+                .from('complaints')
+                .select('*, student:student_id(name, surname, student_no, room_no)')
+                .order('created_at', { ascending: false });
+            
+            if (error) throw error;
+            
+            if (!data || data.length === 0) {
+                complaintsListDiv.innerHTML = '<div style="text-align: center; color: #6c7a89; padding: 32px;">Henüz şikayet veya arz bulunmuyor.</div>';
+                return;
+            }
+
+            const filteredComplaints = applyFilters(data);
+            
+            if (filteredComplaints.length === 0) {
+                complaintsListDiv.innerHTML = '<div style="text-align: center; color: #6c7a89; padding: 32px;">Seçilen kriterlere uygun şikayet veya arz bulunamadı.</div>';
+                return;
+            }
+
+            complaintsListDiv.innerHTML = filteredComplaints.map(c => `
+                <div class="complaint-card ${c.type === 'şikayet' ? 'sikayet' : 'arz'}">
+                    <span class="complaint-status-label ${c.status || 'bekleniyor'}">${c.status === 'bekleniyor' ? 'Bekleniyor' : c.status === 'ilgileniliyor' ? 'İlgileniliyor' : c.status === 'tamamlandı' ? 'Tamamlandı' : 'Bekleniyor'}</span>
+                    <div class="complaint-type ${c.type === 'şikayet' ? 'sikayet' : 'arz'}">${c.type === 'şikayet' ? 'Şikayet' : 'Arz'}</div>
+                    <div class="complaint-category"><b>Kategori:</b> ${c.category || '-'}</div>
+                    <div class="complaint-description"><b>Açıklama:</b> ${c.description}</div>
+                    <div class="complaint-meta">
+                        <span><i class="bi bi-calendar"></i> ${new Date(c.created_at).toLocaleDateString('tr-TR')}</span>
+                        <span><i class="bi bi-clock"></i> ${new Date(c.created_at).toLocaleTimeString('tr-TR')}</span>
+                    </div>
+                    <div class="complaint-student">
+                        <b>Öğrenci:</b> ${c.student ? `${c.student.name} ${c.student.surname} (${c.student.student_no}) - Oda: ${c.student.room_no || '-'} ` : '-'}
+                    </div>
+                    ${c.image ? `<div class='complaint-image'><img src="${c.image}" alt="Görsel"></div>` : ''}
+                    <div class="status-row">
+                        <select class="status-select" data-id="${c.id}">
+                            <option value="bekleniyor" ${c.status==='bekleniyor'?'selected':''}>Bekleniyor</option>
+                            <option value="ilgileniliyor" ${c.status==='ilgileniliyor'?'selected':''}>İlgileniliyor</option>
+                            <option value="tamamlandı" ${c.status==='tamamlandı'?'selected':''}>Tamamlandı</option>
+                        </select>
+                        <button class="btn-primary save-status-btn" data-id="${c.id}">Kaydet</button>
+                    </div>
+                </div>
+            `).join('');
+
+            // Status değiştirme butonlarını yeniden ekle
+            document.querySelectorAll('.save-status-btn').forEach(btn => {
+                btn.addEventListener('click', async function() {
+                    const id = btn.getAttribute('data-id');
+                    const select = document.querySelector(`.status-select[data-id='${id}']`);
+                    const newStatus = select.value;
+                    btn.disabled = true;
+                    btn.textContent = 'Kaydediliyor...';
+                    try {
+                        const { error } = await supabase
+                            .from('complaints')
+                            .update({ status: newStatus })
+                            .eq('id', id);
+                        if (error) throw error;
+                        btn.textContent = 'Kaydedildi';
+                        setTimeout(() => { btn.textContent = 'Kaydet'; btn.disabled = false; }, 1200);
+                        loadComplaintsAdmin();
+                    } catch (err) {
+                        btn.textContent = 'Hata';
+                        setTimeout(() => { btn.textContent = 'Kaydet'; btn.disabled = false; }, 1200);
+                    }
+                });
+            });
+        } catch (err) {
+            complaintsListDiv.innerHTML = '<div style="text-align: center; color: #e74c3c;">Şikayetler yüklenirken bir hata oluştu.</div>';
+        }
+    }
+
+    // Filtre değişikliklerini dinle
+    document.getElementById('filter-type').addEventListener('change', function() {
+        currentFilters.type = this.value;
+        loadComplaintsAdmin();
+    });
+
+    document.getElementById('filter-status').addEventListener('change', function() {
+        currentFilters.status = this.value;
+        loadComplaintsAdmin();
+    });
+
+    document.getElementById('filter-category').addEventListener('change', function() {
+        currentFilters.category = this.value;
+        loadComplaintsAdmin();
+    });
+
+    // Filtreleri sıfırla
+    document.getElementById('reset-filters').addEventListener('click', function() {
+        document.getElementById('filter-type').value = 'all';
+        document.getElementById('filter-status').value = 'all';
+        document.getElementById('filter-category').value = 'all';
+        currentFilters = {
+            type: 'all',
+            status: 'all',
+            category: 'all'
+        };
+        loadComplaintsAdmin();
+    });
+
+    // Sayfa yüklendiğinde şikayet ve arzları yükle
+    loadComplaintsAdmin();
+
+    // Sayfa yüklendiğinde duyuruları yükle
+    loadAnnouncements();
+
+    document.getElementById('admin-logout-btn')?.addEventListener('click', async function() {
+        await supabase.auth.signOut();
+        window.location.href = 'admin-login.html';
+    });
+});
+</script>
+</body>
+</html> 
