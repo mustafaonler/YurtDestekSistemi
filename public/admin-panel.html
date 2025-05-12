@@ -107,6 +107,18 @@
             </div>
         </div>
     </div>
+    <!-- Public ve Private Arzlar için yeni flex container başlangıcı -->
+    <div class="arzlar-flex-container" style="display:flex; gap:32px; width:100%; margin-top:32px;">
+        <div class="public-arz-section arzlar-box" style="flex:1; height:420px; max-height:420px; overflow-y:auto; background:rgba(255,255,255,0.95); border-radius:20px; box-shadow:0 4px 20px rgba(44,62,80,0.1); padding:24px; backdrop-filter:blur(10px); display:flex; flex-direction:column;">
+            <h3 style="color:#00b894; text-align:center; margin-bottom:20px; border-bottom:2px solid #e0e0e0; padding-bottom:12px;">Public Arzlar</h3>
+            <div id="public-arz-list-admin" style="flex:1; overflow-y:auto; word-break:break-word; white-space:normal;"></div>
+        </div>
+        <div class="private-arz-section arzlar-box" style="flex:1; height:420px; max-height:420px; overflow-y:auto; background:rgba(255,255,255,0.95); border-radius:20px; box-shadow:0 4px 20px rgba(44,62,80,0.1); padding:24px; backdrop-filter:blur(10px); display:flex; flex-direction:column;">
+            <h3 style="color:#e17055; text-align:center; margin-bottom:20px; border-bottom:2px solid #e0e0e0; padding-bottom:12px;">Private Arzlar</h3>
+            <div id="private-arz-list-admin" style="flex:1; overflow-y:auto; word-break:break-word; white-space:normal;"></div>
+        </div>
+    </div>
+    <!-- Public ve Private Arzlar için yeni flex container bitişi -->
 </div>
 
 <div class="logout-bar">
@@ -975,13 +987,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         <b>Öğrenci:</b> ${c.student ? `${c.student.name} ${c.student.surname} (${c.student.student_no}) - Oda: ${c.student.room_no || '-'} ` : '-'}
                     </div>
                     ${c.image ? `<div class='complaint-image'><img src="${c.image}" alt="Görsel"></div>` : ''}
-                    <div class="status-row">
+                    <div class="status-row" style="display:flex; align-items:center; gap:12px;">
                         <select class="status-select" data-id="${c.id}">
                             <option value="bekleniyor" ${c.status==='bekleniyor'?'selected':''}>Bekleniyor</option>
                             <option value="ilgileniliyor" ${c.status==='ilgileniliyor'?'selected':''}>İlgileniliyor</option>
                             <option value="tamamlandı" ${c.status==='tamamlandı'?'selected':''}>Tamamlandı</option>
                         </select>
                         <button class="btn-primary save-status-btn" data-id="${c.id}">Kaydet</button>
+                        <button class="btn-delete-admin" data-id="${c.id}" style="background:#e74c3c; color:#fff; border:none; border-radius:8px; padding:8px 18px; font-weight:600; font-size:0.97rem; cursor:pointer; margin-left:auto;"><i class="bi bi-trash"></i> Sil</button>
                     </div>
                 </div>
             `).join('');
@@ -1006,6 +1019,27 @@ document.addEventListener('DOMContentLoaded', function() {
                     } catch (err) {
                         btn.textContent = 'Hata';
                         setTimeout(() => { btn.textContent = 'Kaydet'; btn.disabled = false; }, 1200);
+                    }
+                });
+            });
+            // Admin sil butonlarını ekle
+            document.querySelectorAll('.btn-delete-admin').forEach(btn => {
+                btn.addEventListener('click', async function() {
+                    const id = btn.getAttribute('data-id');
+                    if (!confirm('Bu şikayet/arz kaydını silmek istediğinize emin misiniz?')) return;
+                    btn.disabled = true;
+                    btn.textContent = 'Siliniyor...';
+                    try {
+                        const { error } = await supabase
+                            .from('complaints')
+                            .delete()
+                            .eq('id', id);
+                        if (error) throw error;
+                        showAlert('Kayıt başarıyla silindi!', true);
+                        setTimeout(() => { window.location.reload(); }, 1200);
+                    } catch (err) {
+                        btn.textContent = 'Hata';
+                        setTimeout(() => { btn.textContent = 'Sil'; btn.disabled = false; }, 1200);
                     }
                 });
             });
@@ -1053,6 +1087,105 @@ document.addEventListener('DOMContentLoaded', function() {
         await supabase.auth.signOut();
         window.location.href = 'admin-login.html';
     });
+
+    async function loadPublicArzlarAdmin() {
+        const publicArzListDiv = document.getElementById('public-arz-list-admin');
+        if (!publicArzListDiv) return;
+        try {
+            const { data, error } = await supabase
+                .from('complaints')
+                .select('id, student_id, description, image, created_at')
+                .eq('type', 'arz')
+                .eq('visibility', 'public')
+                .order('created_at', { ascending: false });
+            if (error) throw error;
+            if (!data || data.length === 0) {
+                publicArzListDiv.innerHTML = '<div style="text-align:center; color:#6c7a89;">Henüz public arz yok.</div>';
+                return;
+            }
+            publicArzListDiv.innerHTML = '';
+            for (const c of data) {
+                // Oy sonuçlarını çek
+                const { data: allVotes } = await supabase
+                    .from('votes')
+                    .select('option')
+                    .eq('complaint_id', c.id);
+                const options = [
+                    { value: 'mükemmel', label: 'Mükemmel olur' },
+                    { value: 'iyi', label: 'İyi olur' },
+                    { value: 'farketmez', label: 'Fark etmez' },
+                    { value: 'olmasın', label: 'Olmasın' }
+                ];
+                const counts = { mükemmel: 0, iyi: 0, farketmez: 0, olmasın: 0 };
+                allVotes?.forEach(v => { if (counts[v.option] !== undefined) counts[v.option]++; });
+                const totalVotes = allVotes?.length || 0;
+                let resultsHTML = '';
+                if (totalVotes > 0) {
+                    resultsHTML = `<div style='margin-top:10px;'>${options.map(opt => {
+                        const count = counts[opt.value] || 0;
+                        const percent = totalVotes > 0 ? Math.round((count / totalVotes) * 100) : 0;
+                        return `<div style='margin-bottom:4px;'><b>${opt.label}:</b> ${count} oy (${percent}%)<div style='height:8px; background:#e0e0e0; border-radius:4px; margin-top:2px;'><div style='width:${percent}%; background:#00b894; height:8px; border-radius:4px;'></div></div></div>`;
+                    }).join('')}</div>`;
+                } else {
+                    resultsHTML = `<div style='margin-top:10px; color:#aaa;'>Henüz oy yok.</div>`;
+                }
+                publicArzListDiv.innerHTML += `
+                    <div class="complaint-card arz" style="background:#fff; border-radius:10px; box-shadow:0 2px 8px rgba(0,184,148,0.08); margin-bottom:12px; padding:14px 12px;">
+                        <div style="font-size:0.95rem; color:#6c7a89; margin-bottom:4px;">
+                            <i class="bi bi-calendar"></i> ${new Date(c.created_at).toLocaleDateString('tr-TR')}
+                            <i class="bi bi-clock"></i> ${new Date(c.created_at).toLocaleTimeString('tr-TR')}
+                        </div>
+                        <div><b>Açıklama:</b> ${c.description}</div>
+                        ${c.image ? `<div style='margin-top:6px; max-width:120px;'><img src="${c.image}" alt="Görsel" style="width:100%; border-radius:7px; object-fit:contain;"></div>` : ''}
+                        <div style='margin-top:12px; font-weight:600; color:#00b894;'>Oy Sonuçları</div>
+                        ${resultsHTML}
+                    </div>
+                `;
+            }
+        } catch (err) {
+            publicArzListDiv.innerHTML = '<div style="text-align:center; color:#e74c3c;">Arzlar yüklenirken bir hata oluştu.</div>';
+        }
+    }
+
+    async function loadPrivateArzlarAdmin() {
+        const privateArzListDiv = document.getElementById('private-arz-list-admin');
+        if (!privateArzListDiv) return;
+        try {
+            const { data, error } = await supabase
+                .from('complaints')
+                .select('id, student_id, description, image, created_at')
+                .eq('type', 'arz')
+                .eq('visibility', 'private')
+                .order('created_at', { ascending: false });
+            if (error) throw error;
+            if (!data || data.length === 0) {
+                privateArzListDiv.innerHTML = '<div style="text-align:center; color:#6c7a89;">Henüz private arz yok.</div>';
+                return;
+            }
+            privateArzListDiv.innerHTML = data.map(c => `
+                <div class="complaint-card arz" style="background:#fff; border-radius:10px; box-shadow:0 2px 8px rgba(225,112,85,0.08); margin-bottom:12px; padding:14px 12px;">
+                    <div style="font-size:0.95rem; color:#6c7a89; margin-bottom:4px;">
+                        <i class="bi bi-calendar"></i> ${new Date(c.created_at).toLocaleDateString('tr-TR')}
+                        <i class="bi bi-clock"></i> ${new Date(c.created_at).toLocaleTimeString('tr-TR')}
+                    </div>
+                    <div><b>Açıklama:</b> ${c.description}</div>
+                    ${c.image ? `<div style='margin-top:6px; max-width:120px;'><img src="${c.image}" alt="Görsel" style="width:100%; border-radius:7px; object-fit:contain;"></div>` : ''}
+                </div>
+            `).join('');
+        } catch (err) {
+            privateArzListDiv.innerHTML = '<div style="text-align:center; color:#e74c3c;">Arzlar yüklenirken bir hata oluştu.</div>';
+        }
+    }
+
+    loadPublicArzlarAdmin();
+    loadPrivateArzlarAdmin();
+
+    // Şikayet ve arz oluşturma işlemi sonrası bilgilendirme ve otomatik yenileme
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('created') === '1') {
+        showAlert('Talebiniz başarıyla oluşturuldu!', true);
+        setTimeout(() => { window.location.href = window.location.pathname; }, 1200);
+    }
 });
 </script>
 </body>

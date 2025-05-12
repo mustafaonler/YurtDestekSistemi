@@ -513,6 +513,27 @@
             background: #e0f7e0;
             color: #27ae60;
         }
+        .public-arz-section {
+            width: 100%;
+            margin-top: 32px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(44,62,80,0.1);
+            padding: 24px;
+            backdrop-filter: blur(10px);
+        }
+        .public-arz-section h3 {
+            color: #00b894;
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 12px;
+        }
+        .public-arz-section div {
+            color: #6c7a89;
+            font-size: 0.95rem;
+            margin-top: 16px;
+        }
     </style>
 </head>
 <body>
@@ -548,6 +569,18 @@
                     <div class="form-group">
                         <label for="talep-gorsel" style="color:#00b894; font-weight:600;">Görsel (Opsiyonel)</label>
                         <input type="file" id="talep-gorsel" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label for="offer-visibility"><i class="bi bi-eye"></i> Yayınlama Tercihi</label>
+                        <select id="offer-visibility" required>
+                            <option value="public">public</option>
+                            <option value="private">private</option>
+                        </select>
+                        <small class="form-text text-muted">
+                            <i class="bi bi-info-circle"></i> 
+                            "Herkese Açık" seçeneği ile arzınız tüm kullanıcılar tarafından görüntülenebilir. 
+                            "Yalnızca Yönetici" seçeneği ile arzınız sadece yöneticiler tarafından görüntülenebilir.
+                        </small>
                     </div>
                     <button type="submit" class="btn-primary" style="width:100%; background: linear-gradient(90deg, #00b894 0%, #00cec9 100%); color:#fff; font-weight:700; font-size:1.1rem; border-radius:8px; padding:12px 0; margin-top:10px;">Gönder</button>
                     <div id="talep-form-alert"></div>
@@ -641,14 +674,21 @@
         
         <div class="announcements-section">
             <h3>Duyurular</h3>
-            <div id="announcements-list">
-                <!-- Duyurular JavaScript ile buraya eklenecek -->
-            </div>
+            <div id="announcements-list"></div>
+        </div>
+        <div class="public-arz-section">
+            <h3>Diğer Öğrencilerden Gelen Arzlar</h3>
+            <div id="public-arz-list"></div>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Supabase istemcisini global olarak tanımla
+        const supabaseUrl = 'https://ymmfzxmvddrwkqspmptl.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InltbWZ6eG12ZGRyd2txc3BtcHRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUzOTk0NTgsImV4cCI6MjA2MDk3NTQ1OH0.W4YE-T2UifvFMtERULUcNdLcIfL0mJQ4ZwQqR2xqguI';
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
         const student = JSON.parse(localStorage.getItem('student'));
         const infoDiv = document.getElementById('student-info');
         if (student) {
@@ -681,6 +721,7 @@
         const btnSikayet = document.getElementById('btn-sikayet');
         const btnArz = document.getElementById('btn-arz');
         const sikayetTurGroup = document.getElementById('sikayet-tur-group');
+        const offerVisibilityGroup = document.getElementById('offer-visibility').parentElement;
         let currentType = 'şikayet';
         function updateTypeButtons() {
             if(currentType === 'şikayet') {
@@ -688,25 +729,28 @@
                 btnSikayet.style.background = 'linear-gradient(90deg, #ff7675 0%, #e17055 100%)';
                 btnArz.classList.remove('active');
                 btnArz.style.background = 'linear-gradient(90deg, #00b894 0%, #00cec9 100%)';
+                sikayetTurGroup.style.display = '';
+                offerVisibilityGroup.style.display = 'none';
             } else {
                 btnArz.classList.add('active');
                 btnArz.style.background = 'linear-gradient(90deg, #00b894 0%, #00cec9 100%)';
                 btnSikayet.classList.remove('active');
                 btnSikayet.style.background = 'linear-gradient(90deg, #ff7675 0%, #e17055 100%)';
+                sikayetTurGroup.style.display = 'none';
+                offerVisibilityGroup.style.display = '';
             }
         }
         btnSikayet.addEventListener('click', function() {
             currentType = 'şikayet';
-            sikayetTurGroup.style.display = '';
             updateTypeButtons();
         });
         btnArz.addEventListener('click', function() {
             currentType = 'arz';
-            sikayetTurGroup.style.display = 'none';
             updateTypeButtons();
         });
-        // Başlangıçta şikayet türü alanı açık
+        // Başlangıçta şikayet türü alanı açık, yayınlama tercihi kapalı
         sikayetTurGroup.style.display = '';
+        offerVisibilityGroup.style.display = 'none';
         updateTypeButtons();
 
         // Talep formu gönderimi
@@ -725,10 +769,9 @@
                 }
                 imageBase64 = await toBase64(file);
             }
-            const supabaseUrl = 'https://ymmfzxmvddrwkqspmptl.supabase.co';
-            const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InltbWZ6eG12ZGRyd2txc3BtcHRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUzOTk0NTgsImV4cCI6MjA2MDk3NTQ1OH0.W4YE-T2UifvFMtERULUcNdLcIfL0mJQ4ZwQqR2xqguI';
-            const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
             try {
+                const visibility = currentType === 'arz' ? document.getElementById('offer-visibility').value : 'private';
                 const { data, error } = await supabase
                     .from('complaints')
                     .insert([{
@@ -738,14 +781,18 @@
                         description: desc,
                         image: imageBase64,
                         status: 'beklemede',
+                        visibility: visibility,
                         created_at: new Date().toISOString()
                     }]);
                 if (error) throw error;
                 showAlert('talep-form-alert', (currentType === 'şikayet' ? 'Şikayet' : 'Arz') + ' başarıyla gönderildi!', true);
+                showGlobalAlert((currentType === 'şikayet' ? 'Şikayet' : 'Arz') + ' başarıyla gönderildi!', true);
                 talepForm.reset();
                 loadComplaints();
             } catch (err) {
+                console.error('Hata detayı:', err);
                 showAlert('talep-form-alert', 'Bir hata oluştu, tekrar deneyin.', false);
+                showGlobalAlert('Bir hata oluştu, tekrar deneyin.', false);
             }
         });
         function showAlert(id, msg, success) {
@@ -763,53 +810,76 @@
         }
         // Şikayet ve arzları yükle ve göster
         async function loadComplaints() {
-            const supabaseUrl = 'https://ymmfzxmvddrwkqspmptl.supabase.co';
-            const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InltbWZ6eG12ZGRyd2txc3BtcHRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUzOTk0NTgsImV4cCI6MjA2MDk3NTQ1OH0.W4YE-T2UifvFMtERULUcNdLcIfL0mJQ4ZwQqR2xqguI';
-            const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
             const complaintsListDiv = document.getElementById('complaints-list');
             const arzListDiv = document.getElementById('arz-list');
+            
             if (!student) return;
-            const { data, error } = await supabase
-                .from('complaints')
-                .select('*')
-                .eq('student_id', student.id)
-                .order('created_at', { ascending: false });
-            if (error || !data) {
-                complaintsListDiv.innerHTML = '<div>Şikayet bulunamadı.</div>';
-                arzListDiv.innerHTML = '<div>Arz bulunamadı.</div>';
-                return;
+            
+            try {
+                const { data, error } = await supabase
+                    .from('complaints')
+                    .select('id, student_id, type, category, description, image, status, visibility, created_at')
+                    .eq('student_id', student.id)
+                    .order('created_at', { ascending: false });
+
+                if (error) {
+                    console.error('Supabase hatası:', error);
+                    throw error;
+                }
+
+                if (!data || data.length === 0) {
+                    complaintsListDiv.innerHTML = '<div>Şikayet bulunamadı.</div>';
+                    arzListDiv.innerHTML = '<div>Arz bulunamadı.</div>';
+                    return;
+                }
+
+                const complaints = data.filter(c => c.type === 'şikayet');
+                const arzlar = data.filter(c => c.type === 'arz');
+
+                // Şikayetleri göster
+                complaintsListDiv.innerHTML = complaints.length === 0 ? 
+                    '<div>Şikayet bulunamadı.</div>' : 
+                    complaints.map(c => `
+                        <div class="complaint-card" style="background:#fff; border-radius:10px; box-shadow:0 2px 8px rgba(225,112,85,0.08); margin-bottom:12px; padding:14px 12px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="color:#e17055; font-weight:700;">Şikayet</span>
+                                <span style="font-size:0.95rem; font-weight:600; color:#2ec4b6;">${c.status || 'Beklemede'}</span>
+                            </div>
+                            <div style="margin:6px 0 2px 0;"><b>Kategori:</b> ${c.category || '-'}</div>
+                            <div><b>Açıklama:</b> ${c.description}</div>
+                            <div style="font-size:0.95rem; color:#6c7a89; margin-top:4px;">
+                                <i class="bi bi-calendar"></i> ${new Date(c.created_at).toLocaleDateString('tr-TR')} &nbsp;
+                                <i class="bi bi-clock"></i> ${new Date(c.created_at).toLocaleTimeString('tr-TR')}
+                            </div>
+                            ${c.image ? `<div style='margin-top:6px; max-width:120px;'><img src="${c.image}" alt="Görsel" style="width:100%; border-radius:7px; object-fit:contain;"></div>` : ''}
+                            ${c.student_id === student.id ? `<button class="delete-btn" data-id="${c.id}" style="margin-top:8px; background:#e74c3c; color:#fff; border:none; border-radius:6px; padding:6px 12px; cursor:pointer;">Sil</button>` : ''}
+                        </div>
+                    `).join('');
+
+                // Arzları göster
+                arzListDiv.innerHTML = arzlar.length === 0 ? 
+                    '<div>Arz bulunamadı.</div>' : 
+                    arzlar.map(c => `
+                        <div class="complaint-card" style="background:#fff; border-radius:10px; box-shadow:0 2px 8px rgba(0,184,148,0.08); margin-bottom:12px; padding:14px 12px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="color:#00b894; font-weight:700;">Arz</span>
+                                <span style="font-size:0.95rem; font-weight:600; color:#2ec4b6;">${c.status || 'Beklemede'}</span>
+                            </div>
+                            <div><b>Açıklama:</b> ${c.description}</div>
+                            <div style="font-size:0.95rem; color:#6c7a89; margin-top:4px;">
+                                <i class="bi bi-calendar"></i> ${new Date(c.created_at).toLocaleDateString('tr-TR')} &nbsp;
+                                <i class="bi bi-clock"></i> ${new Date(c.created_at).toLocaleTimeString('tr-TR')}
+                            </div>
+                            ${c.image ? `<div style='margin-top:6px; max-width:120px;'><img src="${c.image}" alt="Görsel" style="width:100%; border-radius:7px; object-fit:contain;"></div>` : ''}
+                            ${c.student_id === student.id ? `<button class="delete-btn" data-id="${c.id}" style="margin-top:8px; background:#e74c3c; color:#fff; border:none; border-radius:6px; padding:6px 12px; cursor:pointer;">Sil</button>` : ''}
+                        </div>
+                    `).join('');
+
+            } catch (err) {
+                console.error('Veri yükleme hatası:', err);
+                complaintsListDiv.innerHTML = '<div>Veriler yüklenirken bir hata oluştu.</div>';
+                arzListDiv.innerHTML = '<div>Veriler yüklenirken bir hata oluştu.</div>';
             }
-            const complaints = data.filter(c => c.type === 'şikayet');
-            const arzlar = data.filter(c => c.type === 'arz');
-            complaintsListDiv.innerHTML = complaints.length === 0 ? '<div>Şikayet bulunamadı.</div>' : complaints.map(c => `
-                <div class="complaint-card" style="background:#fff; border-radius:10px; box-shadow:0 2px 8px rgba(225,112,85,0.08); margin-bottom:12px; padding:14px 12px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="color:#e17055; font-weight:700;">Şikayet</span>
-                        <span style="font-size:0.95rem; font-weight:600; color:#2ec4b6;">${c.status || 'Beklemede'}</span>
-                    </div>
-                    <div style="margin:6px 0 2px 0;"><b>Kategori:</b> ${c.category || '-'}</div>
-                    <div><b>Açıklama:</b> ${c.description}</div>
-                    <div style="font-size:0.95rem; color:#6c7a89; margin-top:4px;">
-                        <i class="bi bi-calendar"></i> ${new Date(c.created_at).toLocaleDateString('tr-TR')} &nbsp;
-                        <i class="bi bi-clock"></i> ${new Date(c.created_at).toLocaleTimeString('tr-TR')}
-                    </div>
-                    ${c.image ? `<div style='margin-top:6px; max-width:120px;'><img src="${c.image}" alt="Görsel" style="width:100%; border-radius:7px; object-fit:contain;"></div>` : ''}
-                </div>
-            `).join('');
-            arzListDiv.innerHTML = arzlar.length === 0 ? '<div>Arz bulunamadı.</div>' : arzlar.map(c => `
-                <div class="complaint-card" style="background:#fff; border-radius:10px; box-shadow:0 2px 8px rgba(0,184,148,0.08); margin-bottom:12px; padding:14px 12px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="color:#00b894; font-weight:700;">Arz</span>
-                        <span style="font-size:0.95rem; font-weight:600; color:#2ec4b6;">${c.status || 'Beklemede'}</span>
-                    </div>
-                    <div><b>Açıklama:</b> ${c.description}</div>
-                    <div style="font-size:0.95rem; color:#6c7a89; margin-top:4px;">
-                        <i class="bi bi-calendar"></i> ${new Date(c.created_at).toLocaleDateString('tr-TR')} &nbsp;
-                        <i class="bi bi-clock"></i> ${new Date(c.created_at).toLocaleTimeString('tr-TR')}
-                    </div>
-                    ${c.image ? `<div style='margin-top:6px; max-width:120px;'><img src="${c.image}" alt="Görsel" style="width:100%; border-radius:7px; object-fit:contain;"></div>` : ''}
-                </div>
-            `).join('');
         }
         loadComplaints();
 
@@ -859,7 +929,169 @@
         
         // Sayfa yüklendiğinde duyuruları yükle
         loadAnnouncements();
+
+        async function loadPublicArzlar() {
+            const publicArzListDiv = document.getElementById('public-arz-list');
+            try {
+                const { data, error } = await supabase
+                    .from('complaints')
+                    .select('id, student_id, type, category, description, image, created_at')
+                    .eq('type', 'arz')
+                    .eq('visibility', 'public')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                if (!data || data.length === 0) {
+                    publicArzListDiv.innerHTML = '<div style="text-align:center; color:#6c7a89;">Henüz public arz yok.</div>';
+                    return;
+                }
+
+                // Her arz için oylama ve sonuçları yükle
+                publicArzListDiv.innerHTML = '';
+                for (const c of data) {
+                    // Öğrencinin bu arza oy verip vermediğini kontrol et
+                    const { data: myVote } = await supabase
+                        .from('votes')
+                        .select('option')
+                        .eq('student_id', student.id)
+                        .eq('complaint_id', c.id)
+                        .maybeSingle();
+
+                    // Tüm oyları çek
+                    const { data: allVotes } = await supabase
+                        .from('votes')
+                        .select('option')
+                        .eq('complaint_id', c.id);
+
+                    // Oylama seçenekleri
+                    const options = [
+                        { value: 'mükemmel', label: 'Mükemmel olur' },
+                        { value: 'iyi', label: 'İyi olur' },
+                        { value: 'farketmez', label: 'Fark etmez' },
+                        { value: 'olmasın', label: 'Olmasın' }
+                    ];
+
+                    // Sonuçları hesapla
+                    const counts = { mükemmel: 0, iyi: 0, farketmez: 0, olmasın: 0 };
+                    allVotes?.forEach(v => { if (counts[v.option] !== undefined) counts[v.option]++; });
+                    const totalVotes = allVotes?.length || 0;
+
+                    // Sonuçlar HTML
+                    let resultsHTML = '';
+                    if (totalVotes > 0) {
+                        resultsHTML = `<div style='margin-top:10px;'>${options.map(opt => {
+                            const count = counts[opt.value] || 0;
+                            const percent = totalVotes > 0 ? Math.round((count / totalVotes) * 100) : 0;
+                            return `<div style='margin-bottom:4px;'><b>${opt.label}:</b> ${count} oy (${percent}%)<div style='height:8px; background:#e0e0e0; border-radius:4px; margin-top:2px;'><div style='width:${percent}%; background:#00b894; height:8px; border-radius:4px;'></div></div></div>`;
+                        }).join('')}</div>`;
+                    } else {
+                        resultsHTML = `<div style='margin-top:10px; color:#aaa;'>Henüz oy yok.</div>`;
+                    }
+
+                    // Oylama formu
+                    let votingHTML = '';
+                    if (!myVote) {
+                        votingHTML = `
+                            <form class='vote-form' data-arz-id='${c.id}' style='margin-top:12px;'>
+                                ${options.map(opt => `
+                                    <label style='display:block; margin-bottom:6px;'>
+                                        <input type='radio' name='vote-option-${c.id}' value='${opt.value}' required style='margin-right:8px;'>
+                                        ${opt.label}
+                                    </label>
+                                `).join('')}
+                                <button type='submit' style='margin-top:8px; background:#00b894; color:#fff; border:none; border-radius:7px; padding:7px 18px; font-weight:600; font-size:1rem; cursor:pointer;'>Oy Gönder</button>
+                            </form>
+                        `;
+                    } else {
+                        votingHTML = `<div style='margin-top:12px; color:#00b894; font-weight:600;'>Oyunuz: ${options.find(o => o.value === myVote.option)?.label || myVote.option}</div>`;
+                    }
+
+                    publicArzListDiv.innerHTML += `
+                        <div class="complaint-card" style="background:#fff; border-radius:10px; box-shadow:0 2px 8px rgba(0,184,148,0.08); margin-bottom:12px; padding:14px 12px;">
+                            <div style="font-size:0.95rem; color:#6c7a89; margin-bottom:4px;">
+                                <i class="bi bi-calendar"></i> ${new Date(c.created_at).toLocaleDateString('tr-TR')}
+                                <i class="bi bi-clock"></i> ${new Date(c.created_at).toLocaleTimeString('tr-TR')}
+                            </div>
+                            <div><b>Açıklama:</b> ${c.description}</div>
+                            ${c.image ? `<div style='margin-top:6px; max-width:120px;'><img src="${c.image}" alt="Görsel" style="width:100%; border-radius:7px; object-fit:contain;"></div>` : ''}
+                            ${votingHTML}
+                            ${resultsHTML}
+                        </div>
+                    `;
+                }
+
+                // Oylama form submit eventlerini ekle
+                document.querySelectorAll('.vote-form').forEach(form => {
+                    form.addEventListener('submit', async function(e) {
+                        e.preventDefault();
+                        const arzId = form.getAttribute('data-arz-id');
+                        const selected = form.querySelector('input[type="radio"]:checked');
+                        if (!selected) return;
+                        const option = selected.value;
+                        // Oy kaydet
+                        const { error } = await supabase
+                            .from('votes')
+                            .insert([{ student_id: student.id, complaint_id: arzId, option }]);
+                        if (error) {
+                            alert('Oy kaydedilemedi!');
+                        } else {
+                            loadPublicArzlar();
+                        }
+                    });
+                });
+            } catch (err) {
+                publicArzListDiv.innerHTML = '<div style="text-align:center; color:#e74c3c;">Arzlar yüklenirken bir hata oluştu.</div>';
+            }
+        }
+
+        // Sayfa yüklenince bu fonksiyonu çağır
+        loadPublicArzlar();
+
+        document.addEventListener('click', async function(e) {
+            if (e.target.classList.contains('delete-btn')) {
+                const kayitId = e.target.getAttribute('data-id');
+                if (confirm('Kaydı silmek istediğinize emin misiniz?')) {
+                    const { error } = await supabase
+                        .from('complaints')
+                        .delete()
+                        .eq('id', kayitId);
+                    if (!error) {
+                        alert('Kaydınız başarıyla silindi.');
+                        loadComplaints();
+                        loadPublicArzlar && loadPublicArzlar();
+                    } else {
+                        alert('Kayıt silinemedi! (Sadece kendi kaydınızı silebilirsiniz)');
+                    }
+                }
+            }
+        });
     });
+
+    // Sayfanın üstünde kısa süreli genel bilgilendirme mesajı fonksiyonu ekle
+    function showGlobalAlert(message, success = true) {
+        let alertDiv = document.getElementById('global-alert');
+        if (!alertDiv) {
+            alertDiv = document.createElement('div');
+            alertDiv.id = 'global-alert';
+            alertDiv.style.position = 'fixed';
+            alertDiv.style.top = '30px';
+            alertDiv.style.left = '50%';
+            alertDiv.style.transform = 'translateX(-50%)';
+            alertDiv.style.zIndex = '9999';
+            alertDiv.style.padding = '16px 32px';
+            alertDiv.style.borderRadius = '10px';
+            alertDiv.style.fontSize = '1.1rem';
+            alertDiv.style.fontWeight = '600';
+            alertDiv.style.boxShadow = '0 4px 24px rgba(44,62,80,0.18)';
+            document.body.appendChild(alertDiv);
+        }
+        alertDiv.style.background = success ? '#27ae60' : '#e74c3c';
+        alertDiv.style.color = '#fff';
+        alertDiv.textContent = message;
+        alertDiv.style.display = 'block';
+        setTimeout(() => { alertDiv.style.display = 'none'; }, 2500);
+    }
     </script>
 </body>
 </html> 

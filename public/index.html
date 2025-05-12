@@ -102,7 +102,7 @@
                 <li><a href="#">SSS</a></li>
                 <li><a href="#">Gizlilik Politikası</a></li>
                 <li><a href="#">Kullanım Koşulları</a></li>
-            </ul>
+            </ul>       
         </div>
         <div class="footer-right">
             <div class="footer-links-title">Destek İletişim</div>
@@ -215,10 +215,105 @@
         }
     });
 
-    // Supabase bağlantısı
-    const supabaseUrl = 'https://ymmfzxmvddrwkqspmptl.supabase.co'
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InltbWZ6eG12ZGRyd2txc3BtcHRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk5MjQ5NzAsImV4cCI6MjA1NTUwMDk3MH0.8Q5YwXZQZQZQZQZQZQZQZQZQZQZQZQZQZQZQZQZQZQ'
-    const supabase = supabase.createClient(supabaseUrl, supabaseKey)
+    // Supabase bağlantısını güncelle
+    const supabaseUrl = 'https://ymmfzxmvddrwkqspmptl.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InltbWZ6eG12ZGRyd2txc3BtcHRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUzOTk0NTgsImV4cCI6MjA2MDk3NTQ1OH0.W4YE-T2UifvFMtERULUcNdLcIfL0mJQ4ZwQqR2xqguI';
+
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey, {
+        auth: {
+            autoRefreshToken: true,
+            persistSession: true,
+            detectSessionInUrl: true
+        },
+        global: {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'apikey': supabaseKey,
+                'Authorization': `Bearer ${supabaseKey}`
+            }
+        }
+    });
+
+    // Login fonksiyonunu güncelle
+    async function handleLogin(tc, password) {
+        try {
+            // Önce students tablosunda kullanıcıyı kontrol et
+            const { data: studentData, error: studentError } = await supabase
+                .from('students')
+                .select('*')
+                .eq('tc_no', tc)
+                .maybeSingle();
+
+            if (studentError) {
+                console.error('Supabase error:', studentError);
+                throw new Error('Kullanıcı bulunamadı');
+            }
+
+            if (!studentData) {
+                throw new Error('Kullanıcı bulunamadı');
+            }
+
+            // Şifre kontrolü
+            if (studentData.password !== password) {
+                throw new Error('Şifre hatalı');
+            }
+
+            // Başarılı giriş
+            localStorage.setItem('studentData', JSON.stringify(studentData));
+            window.location.href = 'student-dashboard.html';
+
+        } catch (error) {
+            console.error('Giriş hatası:', error);
+            showAlert(error.message || 'Giriş yapılırken bir hata oluştu', false);
+            throw error;
+        }
+    }
+
+    // Login form submit işleyicisini güncelle
+    document.getElementById('login-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const tc = document.getElementById('login-tc').value;
+        const password = document.getElementById('login-password').value;
+        
+        const submitButton = this.querySelector('button[type="submit"]');
+        const originalText = submitButton.textContent;
+        
+        try {
+            submitButton.disabled = true;
+            submitButton.textContent = 'Giriş yapılıyor...';
+            
+            await handleLogin(tc, password);
+        } catch (error) {
+            console.error('Login error:', error);
+        } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = originalText;
+        }
+    });
+
+    // Alert fonksiyonunu güncelle
+    function showAlert(message, success = true) {
+        const alertDiv = document.createElement('div');
+        alertDiv.style.position = 'fixed';
+        alertDiv.style.top = '20px';
+        alertDiv.style.left = '50%';
+        alertDiv.style.transform = 'translateX(-50%)';
+        alertDiv.style.padding = '15px 30px';
+        alertDiv.style.borderRadius = '5px';
+        alertDiv.style.color = '#fff';
+        alertDiv.style.backgroundColor = success ? '#2ecc71' : '#e74c3c';
+        alertDiv.style.zIndex = '1000';
+        alertDiv.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+        alertDiv.textContent = message;
+        
+        document.body.appendChild(alertDiv);
+        
+        setTimeout(() => {
+            alertDiv.remove();
+        }, 3000);
+    }
 
     // Form doğrulama fonksiyonları
     function validateTC(tc) {
@@ -240,7 +335,12 @@
                 .from('students')
                 .select('tc_no')
                 .eq('tc_no', tc)
-                .single();
+                .maybeSingle();
+
+            if (tcError) {
+                console.error('TC kontrol hatası:', tcError);
+                return { exists: false };
+            }
 
             if (tcData) {
                 return { exists: true, field: 'tc_no' };
@@ -250,7 +350,12 @@
                 .from('students')
                 .select('student_no')
                 .eq('student_no', studentNo)
-                .single();
+                .maybeSingle();
+
+            if (studentNoError) {
+                console.error('Öğrenci no kontrol hatası:', studentNoError);
+                return { exists: false };
+            }
 
             if (studentNoData) {
                 return { exists: true, field: 'student_no' };
@@ -262,20 +367,6 @@
             return { exists: false };
         }
     }
-
-    // Login form doğrulama
-    document.getElementById('login-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const tc = document.getElementById('login-tc').value;
-        
-        if (!validateTC(tc)) {
-            alert('TC Kimlik No 11 haneli olmalıdır!');
-            return;
-        }
-        
-        // Form geçerliyse gönder
-        this.submit();
-    });
 
     // Register form doğrulama
     document.getElementById('register-form').addEventListener('submit', async function(e) {
