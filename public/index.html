@@ -86,6 +86,38 @@
         </div>
     </section>
 
+    <!-- Facilities -->
+    <section class="facilities-section">
+        <h2>Yurt Hizmetleri</h2>
+        <div class="facilities">
+            <div class="facility-card">
+                <img src="images/YURT ODASI.jpg" alt="Yurt Odası">
+                <h3>Konforlu Odalar</h3>
+                <p>4 kişilik modern ve ferah odalar</p>
+            </div>
+            <div class="facility-card">
+                <img src="images/YURT YEMEKHANESİ.jpg" alt="Yemekhane">
+                <h3>Yemekhane</h3>
+                <p>Günlük 3 öğün yemek hizmeti</p>
+            </div>
+            <div class="facility-card">
+                <img src="images/YURT ÇALIŞMA SALONU.jpg" alt="Çalışma Salonu">
+                <h3>Çalışma Salonu</h3>
+                <p>24 saat açık çalışma alanları</p>
+            </div>
+            <div class="facility-card">
+                <img src="images/YURT SPOR SALONU.jpg" alt="Spor Salonu">
+                <h3>Spor Salonu</h3>
+                <p>Modern fitness ekipmanları</p>
+            </div>
+            <div class="facility-card">
+                <img src="images/YURT KANTİNİ.jpg" alt="Kantin">
+                <h3>Kantin</h3>
+                <p>7/24 açık market ve kafeterya</p>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="main-footer">
         <div class="footer-left">
@@ -261,6 +293,7 @@
 
             // Başarılı giriş
             localStorage.setItem('studentData', JSON.stringify(studentData));
+            console.log('localStorage studentData:', JSON.parse(localStorage.getItem('studentData')));
             window.location.href = 'student-dashboard.html';
 
         } catch (error) {
@@ -331,34 +364,20 @@
     // TC ve Öğrenci No kontrolü
     async function checkExistingUser(tc, studentNo) {
         try {
-            const { data: tcData, error: tcError } = await supabase
+            const { data, error } = await supabase
                 .from('students')
-                .select('tc_no')
+                .select('*')
                 .eq('tc_no', tc)
-                .maybeSingle();
-
-            if (tcError) {
-                console.error('TC kontrol hatası:', tcError);
-                return { exists: false };
-            }
-
-            if (tcData) {
-                return { exists: true, field: 'tc_no' };
-            }
-
-            const { data: studentNoData, error: studentNoError } = await supabase
-                .from('students')
-                .select('student_no')
                 .eq('student_no', studentNo)
                 .maybeSingle();
 
-            if (studentNoError) {
-                console.error('Öğrenci no kontrol hatası:', studentNoError);
+            if (error) {
+                console.error('Kontrol hatası:', error);
                 return { exists: false };
             }
 
-            if (studentNoData) {
-                return { exists: true, field: 'student_no' };
+            if (data) {
+                return { exists: true, field: 'tc_no' };
             }
 
             return { exists: false };
