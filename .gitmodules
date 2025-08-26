@@ -1,0 +1,3 @@
+[submodule "Yurtdestek"]
+	path = Yurtdestek
+	url = https://github.com/mustafaonler/Yurtdestek.git
