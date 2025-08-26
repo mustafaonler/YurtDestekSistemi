@@ -9,9 +9,7 @@
 
 <div align="center">
   <h3>🚀 Canlı Demo</h3>
-  <a href="https://yurt-destek-sistemi.vercel.app/" target="_blank">
-    <h4>yurt-destek-sistemi.vercel.app</h4>
-  </a>
+  [yurt-destek-sistemi.vercel.app](https://yurt-destek-sistemi.vercel.app/)
 </div>
 
 ---
@@ -105,16 +103,4 @@ Projeyi yerel makinenizde çalıştırmak için aşağıdaki adımları izleyin.
     ```bash
     npm start
     ```
-5.  Tarayıcınızda `http://localhost:3000` adresine giderek uygulamaya erişebilirsiniz.
-
----
-
-## 🤝 Katkıda Bulunma
-
-Projenin gelişimine katkıda bulunmak için pull request'lerinizi memnuniyetle kabul ederiz. Lütfen katkıda bulunmadan önce var olan sorunları ve özellikleri kontrol edin.
-
----
-
-## 📜 Lisans
-
-Bu proje **MIT Lisansı** altında lisanslanmıştır. Daha fazla bilgi için `LICENSE` dosyasına göz atın.
+5.
