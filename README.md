@@ -26,23 +26,28 @@ Uygulamanın ana sayfası ve öğrenci/admin giriş modülleri.
 
 ### 🧑‍🎓 Öğrenci Paneli
 Öğrencilerin kendi taleplerini oluşturduğu ve görüntülediği ekran.
-![Öğrenci Paneli](images/ogrenci_paneli.png)
+(images/![WhatsApp Görsel 2025-08-26 saat 14 53 38_7ef206fa](https://github.com/user-attachments/assets/0dbdd701-9027-4e6b-a96d-b8703a55f091)
+)
 
 ### 👨‍💼 Admin Paneli: Talepleri Yönetme
 Yöneticilerin tüm talepleri filtreleyip yönettiği ana kontrol paneli.
-![Admin Paneli](images/admin_paneli.png)
+(images/![WhatsApp Görsel 2025-08-26 saat 14 53 38_4202ff1f](https://github.com/user-attachments/assets/549634fe-e9e3-4bc4-8972-313433e2535c)
+)
 
 ### 📢 Duyuru Yönetimi
 Admin panelinde duyuru ekleme ve silme işlemleri.
-![Duyuru Yönetimi](images/duyuru_yonetimi.png)
+(images/![WhatsApp Görsel 2025-08-26 saat 14 53 47_ce6a9837](https://github.com/user-attachments/assets/8fc646e4-13e5-4805-bcae-78a41eaf74e6)
+)
 
 ### 🗳️ Kamu Arzları & Oylama
 Public arzların oylama sonuçlarının görselleştirilmesi.
-![Kamu Arzları Oylama](images/kamu_arzları.png)
+(images/![WhatsApp Görsel 2025-08-26 saat 14 53 38_184f5d46](https://github.com/user-attachments/assets/45ce31b7-3f53-4b3b-95ec-0ba73b662f9c)
+)
 
 ### ✅ Durum Güncelleme
 Admin panelinde bir talebin durumunu güncelleme.
-![Durum Güncelleme](images/durum_guncelleme.png)
+(images/![WhatsApp Görsel 2025-08-26 saat 14 53 38_fdda417c](https://github.com/user-attachments/assets/10d0978b-5df5-48cd-b72b-16a8c12c9383)
+)
 
 ---
 
