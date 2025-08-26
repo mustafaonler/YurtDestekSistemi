@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="images/logo.png" alt="Proje Logosu" width="150" />
+
   <h1>Yurt Destek Sistemi</h1>
   <p>Öğrenciler için şikayet ve arz bildirimi, yöneticiler için ise tüm talepleri yönetme paneli.</p>
   
@@ -20,7 +20,8 @@ Uygulamanın arayüzünü daha iyi anlamanız için bazı ekran görüntülerini
 
 ### 🏡 Anasayfa & Giriş Ekranları
 Uygulamanın ana sayfası ve öğrenci/admin giriş modülleri.
-![Anasayfa](images/anasayfa.png)
+![Anasayfa](images/(https://github.com/user-attachments/assets/d21200a8-8f59-4885-ae9e-23a90538c381)
+)
 
 ### 🧑‍🎓 Öğrenci Paneli
 Öğrencilerin kendi taleplerini oluşturduğu ve görüntülediği ekran.
