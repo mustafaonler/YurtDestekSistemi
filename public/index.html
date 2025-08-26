@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DormSupport - Yurt Destek Sistemi</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header Bar -->
+    <header class="main-header">
+        <div class="header-left">
+            <div class="logo-box">
+                <span class="logo-icon">DS</span>
+                <span class="logo-title">DormSupport</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="button-container" style="display: flex; gap: 16px;">
+                <button class="btn-primary" onclick="window.location.href='student-login.html'">Öğrenci Girişi</button>
+                <button class="btn-primary" onclick="window.location.href='admin-login.html'">Yönetici Girişi</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>Yurdunuz, Sizin Sesiniz</h1>
+            <p>Yurt yaşamınız için bakım talepleri, şikayetler ve önerilerinizi sunabileceğiniz sorunsuz bir platform.</p>
+            <button class="hero-action-btn" id="open-complaint-modal">Şikayet & Arıza Bildir</button>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" alt="Yurt" />
+        </div>
+    </section>
+
+    <!-- Help Cards -->
+    <section class="help-section">
+        <h2>Size Nasıl Yardımcı Olabiliriz</h2>
+        <div class="help-cards">
+            <div class="help-card">
+                <div class="help-icon electricity"><i class="bi bi-lightning-charge"></i></div>
+                <h3>Elektrik</h3>
+                <p>Odanızda veya ortak alanlarda elektrik kesintileri, arızalı prizler veya aydınlatma sorunlarını bildirin.</p>
+            </div>
+            <div class="help-card">
+                <div class="help-icon water"><i class="bi bi-droplet"></i></div>
+                <h3>Su & Tesisat</h3>
+                <p>Su sızıntıları, tıkalı giderler veya su sıcaklığı sorunları için destek talep edin.</p>
+            </div>
+            <div class="help-card">
+                <div class="help-icon security"><i class="bi bi-shield-lock"></i></div>
+                <h3>Güvenlik</h3>
+                <p>Kilitler, güvenlik kameraları veya yurt çevresindeki şüpheli durumlar hakkında endişelerinizi bildirin.</p>
+            </div>
+            <div class="help-card">
+                <div class="help-icon cleaning"><i class="bi bi-bucket"></i></div>
+                <h3>Temizlik</h3>
+                <p>Ortak alanlardaki temizlik hizmetlerini planlayın veya temizlik sorunlarını bildirin.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Announcements -->
+    <section class="announcements-section">
+        <h2>Son Duyurular</h2>
+        <div class="announcements-cards">
+            <div class="announcement-card">
+                <div class="announcement-title"><i class="bi bi-megaphone"></i> Planlı Bakım</div>
+                <div class="announcement-date">15 Ekim 2023</div>
+                <div class="announcement-desc">Planlı bakım nedeniyle su temini saat 10:00 ile 14:00 arasında geçici olarak kesilecektir.</div>
+            </div>
+            <div class="announcement-card">
+                <div class="announcement-title"><i class="bi bi-megaphone"></i> Yeni Talep Sistemi Güncellemesi</div>
+                <div class="announcement-date">12 Ekim 2023</div>
+                <div class="announcement-desc">Daha hızlı yanıt süreleri ve daha iyi takip için talep sistemimizi güncelledik.</div>
+            </div>
+            <div class="announcement-card">
+                <div class="announcement-title"><i class="bi bi-megaphone"></i> Hafta Sonu Güvenlik Artırımı</div>
+                <div class="announcement-date">9 Ekim 2023</div>
+                <div class="announcement-desc">Hafta sonu akşamları ek güvenlik personeli görevlendirilecektir.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Facilities -->
+    <section class="facilities-section">
+        <h2>Yurt Hizmetleri</h2>
+        <div class="facilities">
+            <div class="facility-card">
+                <img src="images/YURT ODASI.jpg" alt="Yurt Odası">
+                <h3>Konforlu Odalar</h3>
+                <p>4 kişilik modern ve ferah odalar</p>
+            </div>
+            <div class="facility-card">
+                <img src="images/YURT YEMEKHANESİ.jpg" alt="Yemekhane">
+                <h3>Yemekhane</h3>
+                <p>Günlük 3 öğün yemek hizmeti</p>
+            </div>
+            <div class="facility-card">
+                <img src="images/YURT ÇALIŞMA SALONU.jpg" alt="Çalışma Salonu">
+                <h3>Çalışma Salonu</h3>
+                <p>24 saat açık çalışma alanları</p>
+            </div>
+            <div class="facility-card">
+                <img src="images/YURT SPOR SALONU.jpg" alt="Spor Salonu">
+                <h3>Spor Salonu</h3>
+                <p>Modern fitness ekipmanları</p>
+            </div>
+            <div class="facility-card">
+                <img src="images/YURT KANTİNİ.jpg" alt="Kantin">
+                <h3>Kantin</h3>
+                <p>7/24 açık market ve kafeterya</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-left">
+            <div class="logo-box">
+                <span class="logo-icon">DS</span>
+                <span class="logo-title">DormSupport</span>
+            </div>
+            <p>Verimli destek ve iletişim ile yurt yaşamını daha iyi hale getiriyoruz.</p>
+        </div>
+        <div class="footer-center">
+            <div class="footer-links-title">Hızlı Bağlantılar</div>
+            <ul class="footer-links">
+                <li><a href="#">Hakkımızda</a></li>
+                <li><a href="#">SSS</a></li>
+                <li><a href="#">Gizlilik Politikası</a></li>
+                <li><a href="#">Kullanım Koşulları</a></li>
+            </ul>       
+        </div>
+        <div class="footer-right">
+            <div class="footer-links-title">Destek İletişim</div>
+            <ul class="footer-links">
+                <li><a href="mailto:destek@dormsupport.edu">destek@dormsupport.edu</a></li>
+                <li><a href="tel:5551234567">(555) 123-4567</a></li>
+                <li><a href="#">Yardım Merkezi</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <!-- Login/Register Modal -->
+    <div class="modal-overlay" id="auth-modal" style="display:none;">
+        <div class="modal-box">
+            <button class="modal-close" id="close-auth-modal"><i class="bi bi-x-lg"></i></button>
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Giriş</button>
+                <button class="auth-tab" data-tab="register">Kayıt</button>
+            </div>
+            <div class="form-container">
+                <div class="form-box">
+                    <div class="form-header">
+                        <h2>Öğrenci Girişi</h2>
+                    </div>
+                    <form id="login-form" class="login-form">
+                        <div class="form-group">
+                            <label for="login-tc">TC Kimlik No</label>
+                            <input type="text" id="login-tc" name="tc" required pattern="[0-9]{11}" maxlength="11" title="TC Kimlik No 11 haneli olmalıdır">
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password">Şifre</label>
+                            <input type="password" id="login-password" name="password" required>
+                        </div>
+                        <button type="submit" class="login-btn">Giriş Yap</button>
+                    </form>
+                </div>
+            </div>
+            <div class="form-container">
+                <div class="form-box">
+                    <div class="form-header">
+                        <h2>Öğrenci Kayıt</h2>
+                    </div>
+                    <form id="register-form" class="register-form">
+                        <div class="form-group">
+                            <label for="register-tc">TC Kimlik No</label>
+                            <input type="text" id="register-tc" name="tc" required 
+                                pattern="[0-9]{11}" 
+                                maxlength="11" 
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                title="TC Kimlik No 11 haneli olmalıdır">
+                        </div>
+                        <div class="form-group">
+                            <label for="register-student-no">Öğrenci Numarası</label>
+                            <input type="text" id="register-student-no" name="studentNo" required 
+                                pattern="[0-9]{9}" 
+                                maxlength="9" 
+                                minlength="9"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 9) this.value = this.value.slice(0,9);"
+                                title="Öğrenci numarası tam olarak 9 haneli olmalıdır">
+                        </div>
+                        <div class="form-group">
+                            <label for="register-password">Şifre</label>
+                            <input type="password" id="register-password" name="password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-password-confirm">Şifre Tekrar</label>
+                            <input type="password" id="register-password-confirm" name="passwordConfirm" required>
+                        </div>
+                        <button type="submit" class="register-btn">Kayıt Ol</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div class="modal-overlay" id="admin-auth-modal" style="display:none;">
+        <div class="modal-box">
+            <button class="modal-close" id="close-admin-auth-modal"><i class="bi bi-x-lg"></i></button>
+            <h2 class="modal-title">Admin Girişi</h2>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label for="admin-username"><i class="bi bi-person"></i> Kullanıcı Adı</label>
+                    <input type="text" id="admin-username" required placeholder="Kullanıcı adınızı giriniz">
+                </div>
+                <div class="form-group">
+                    <label for="admin-password"><i class="bi bi-key"></i> Şifre</label>
+                    <div class="password-input">
+                        <input type="password" id="admin-password" required placeholder="Şifrenizi giriniz">
+                        <span class="toggle-password"><i class="bi bi-eye"></i></span>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary">Admin Girişi Yap</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Supabase JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Sizin script dosyanız -->
+    <script src="script.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const studentLoginBtn = document.getElementById('student-login-btn');
+        if (studentLoginBtn) {
+            studentLoginBtn.addEventListener('click', () => {
+                window.location.href = 'student-login.html';
+            });
+        }
+    });
+
+    // Supabase bağlantısını güncelle
+    const supabaseUrl = 'https://ymmfzxmvddrwkqspmptl.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InltbWZ6eG12ZGRyd2txc3BtcHRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUzOTk0NTgsImV4cCI6MjA2MDk3NTQ1OH0.W4YE-T2UifvFMtERULUcNdLcIfL0mJQ4ZwQqR2xqguI';
+
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey, {
+        auth: {
+            autoRefreshToken: true,
+            persistSession: true,
+            detectSessionInUrl: true
+        },
+        global: {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'apikey': supabaseKey,
+                'Authorization': `Bearer ${supabaseKey}`
+            }
+        }
+    });
+
+    // Login fonksiyonunu güncelle
+    async function handleLogin(tc, password) {
+        try {
+            // Önce students tablosunda kullanıcıyı kontrol et
+            const { data: studentData, error: studentError } = await supabase
+                .from('students')
+                .select('*')
+                .eq('tc_no', tc)
+                .maybeSingle();
+
+            if (studentError) {
+                console.error('Supabase error:', studentError);
+                throw new Error('Kullanıcı bulunamadı');
+            }
+
+            if (!studentData) {
+                throw new Error('Kullanıcı bulunamadı');
+            }
+
+            // Şifre kontrolü
+            if (studentData.password !== password) {
+                throw new Error('Şifre hatalı');
+            }
+
+            // Başarılı giriş
+            localStorage.setItem('studentData', JSON.stringify(studentData));
+            console.log('localStorage studentData:', JSON.parse(localStorage.getItem('studentData')));
+            window.location.href = 'student-dashboard.html';
+
+        } catch (error) {
+            console.error('Giriş hatası:', error);
+            showAlert(error.message || 'Giriş yapılırken bir hata oluştu', false);
+            throw error;
+        }
+    }
+
+    // Login form submit işleyicisini güncelle
+    document.getElementById('login-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const tc = document.getElementById('login-tc').value;
+        const password = document.getElementById('login-password').value;
+        
+        const submitButton = this.querySelector('button[type="submit"]');
+        const originalText = submitButton.textContent;
+        
+        try {
+            submitButton.disabled = true;
+            submitButton.textContent = 'Giriş yapılıyor...';
+            
+            await handleLogin(tc, password);
+        } catch (error) {
+            console.error('Login error:', error);
+        } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = originalText;
+        }
+    });
+
+    // Alert fonksiyonunu güncelle
+    function showAlert(message, success = true) {
+        const alertDiv = document.createElement('div');
+        alertDiv.style.position = 'fixed';
+        alertDiv.style.top = '20px';
+        alertDiv.style.left = '50%';
+        alertDiv.style.transform = 'translateX(-50%)';
+        alertDiv.style.padding = '15px 30px';
+        alertDiv.style.borderRadius = '5px';
+        alertDiv.style.color = '#fff';
+        alertDiv.style.backgroundColor = success ? '#2ecc71' : '#e74c3c';
+        alertDiv.style.zIndex = '1000';
+        alertDiv.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+        alertDiv.textContent = message;
+        
+        document.body.appendChild(alertDiv);
+        
+        setTimeout(() => {
+            alertDiv.remove();
+        }, 3000);
+    }
+
+    // Form doğrulama fonksiyonları
+    function validateTC(tc) {
+        return /^[0-9]{11}$/.test(tc);
+    }
+
+    function validateStudentNo(studentNo) {
+        // Tam olarak 9 haneli sayı kontrolü
+        if (!/^[0-9]{9}$/.test(studentNo)) {
+            return false;
+        }
+        return true;
+    }
+
+    // TC ve Öğrenci No kontrolü
+    async function checkExistingUser(tc, studentNo) {
+        try {
+            const { data, error } = await supabase
+                .from('students')
+                .select('*')
+                .eq('tc_no', tc)
+                .eq('student_no', studentNo)
+                .maybeSingle();
+
+            if (error) {
+                console.error('Kontrol hatası:', error);
+                return { exists: false };
+            }
+
+            if (data) {
+                return { exists: true, field: 'tc_no' };
+            }
+
+            return { exists: false };
+        } catch (error) {
+            console.error('Kontrol hatası:', error);
+            return { exists: false };
+        }
+    }
+
+    // Register form doğrulama
+    document.getElementById('register-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const tc = document.getElementById('register-tc').value;
+        const studentNo = document.getElementById('register-student-no').value;
+        const password = document.getElementById('register-password').value;
+        const passwordConfirm = document.getElementById('register-password-confirm').value;
+        
+        // TC Kimlik kontrolü
+        if (!validateTC(tc)) {
+            alert('TC Kimlik No 11 haneli olmalıdır!');
+            document.getElementById('register-tc').focus();
+            return;
+        }
+        
+        // Öğrenci numarası kontrolü
+        if (!validateStudentNo(studentNo)) {
+            alert('Öğrenci numarası tam olarak 9 haneli olmalıdır!');
+            document.getElementById('register-student-no').focus();
+            return;
+        }
+
+        // Şifre kontrolü
+        if (password !== passwordConfirm) {
+            alert('Şifreler eşleşmiyor!');
+            return;
+        }
+
+        try {
+            // Mevcut kullanıcı kontrolü
+            const checkResult = await checkExistingUser(tc, studentNo);
+            if (checkResult.exists) {
+                if (checkResult.field === 'tc_no') {
+                    alert('Bu TC Kimlik No ile kayıtlı bir kullanıcı zaten var!');
+                    return;
+                } else {
+                    alert('Bu Öğrenci No ile kayıtlı bir kullanıcı zaten var!');
+                    return;
+                }
+            }
+
+            // Yeni kayıt oluşturma
+            const { data, error } = await supabase
+                .from('students')
+                .insert([
+                    {
+                        tc_no: tc,
+                        student_no: studentNo,
+                        password: password,
+                        created_at: new Date().toISOString()
+                    }
+                ])
+                .select();
+
+            if (error) {
+                if (error.code === '23505') { // Unique violation error code
+                    alert('Bu TC Kimlik No veya Öğrenci No ile kayıtlı bir kullanıcı zaten var!');
+                } else {
+                    throw error;
+                }
+                return;
+            }
+
+            alert('Kayıt başarılı! Giriş sayfasına yönlendiriliyorsunuz.');
+            window.location.href = 'student-login.html';
+        } catch (error) {
+            console.error('Kayıt hatası:', error);
+            alert('Kayıt sırasında bir hata oluştu. Lütfen tekrar deneyin.');
+        }
+    });
+
+    // Öğrenci numarası input kontrolü
+    const studentNoInput = document.getElementById('register-student-no');
+    
+    studentNoInput.addEventListener('input', function(e) {
+        // Sadece sayı girişine izin ver
+        this.value = this.value.replace(/[^0-9]/g, '');
+        
+        // 9 haneden fazla girişi engelle
+        if (this.value.length > 9) {
+            this.value = this.value.slice(0, 9);
+        }
+        
+        // 9 haneden az ise input'u kırmızı yap
+        if (this.value.length !== 9) {
+            this.style.borderColor = 'red';
+            this.setCustomValidity('Öğrenci numarası tam olarak 9 haneli olmalıdır!');
+        } else {
+            this.style.borderColor = '';
+            this.setCustomValidity('');
+        }
+    });
+
+    studentNoInput.addEventListener('blur', function(e) {
+        if (this.value.length !== 9) {
+            alert('Öğrenci numarası tam olarak 9 haneli olmalıdır!');
+            this.focus();
+        }
+    });
+
+    // Form submit öncesi son kontrol
+    document.getElementById('register-form').addEventListener('submit', function(e) {
+        const studentNo = document.getElementById('register-student-no').value;
+        if (studentNo.length !== 9) {
+            e.preventDefault();
+            alert('Öğrenci numarası tam olarak 9 haneli olmalıdır!');
+            document.getElementById('register-student-no').focus();
+            return false;
+        }
+    });
+    </script>
+</body>
+</html> 

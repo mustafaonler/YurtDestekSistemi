@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Öğrenci Paneli | DormSupport</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+        .student-panel-box {
+            max-width: 1200px;
+            margin: 6vh auto 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(44,62,80,0.2);
+            padding: 42px 48px 32px 48px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+        .student-panel-box h2 {
+            color: #159a8c;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        .student-info {
+            background: #f6f8fa;
+            border-radius: 10px;
+            padding: 16px 18px;
+            width: 100%;
+            margin-bottom: 10px;
+            color: #222b36;
+            font-size: 1.05rem;
+        }
+        .logout-btn {
+            background: #e71d36;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 18px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .logout-btn:hover {
+            background: #b83280;
+        }
+        .tab-box {
+            width: 100%;
+            background: #f6f8fa;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(44,62,80,0.06);
+            margin-top: 18px;
+            padding: 0 0 18px 0;
+        }
+        .tab-header {
+            display: flex;
+            border-bottom: 1.5px solid #e0e0e0;
+        }
+        .tab-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #159a8c;
+            padding: 16px 0 12px 0;
+            cursor: pointer;
+            border-radius: 12px 12px 0 0;
+            transition: background 0.2s;
+        }
+        .tab-btn.active {
+            background: #fff;
+            color: #2ec4b6;
+            border-bottom: 2.5px solid #2ec4b6;
+        }
+        .tab-content { display: none; padding: 18px 18px 0 18px; }
+        .tab-content.active { display: block; }
+        .complaint-form {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.06);
+            padding: 18px 16px 10px 16px;
+            margin-bottom: 0;
+            margin-top: 0;
+        }
+        .complaint-form .form-type-label {
+            font-size: 1.08rem;
+            font-weight: 600;
+            color: #fff;
+            background: #2ec4b6;
+            border-radius: 7px;
+            padding: 6px 16px;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+        .complaint-form .form-group {
+            margin-bottom: 14px;
+        }
+        .complaint-form label {
+            font-size: 1rem;
+            color: #159a8c;
+            font-weight: 500;
+        }
+        .complaint-form select,
+        .complaint-form textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 7px;
+            font-size: 1rem;
+            margin-top: 2px;
+            resize: none;
+        }
+        .complaint-form textarea {
+            min-height: 70px;
+        }
+        .complaint-form input[type="file"] {
+            margin-top: 6px;
+        }
+        .complaint-form .btn-primary {
+            width: 100%;
+            background: #2ec4b6;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .complaint-form .btn-primary:hover {
+            background: #159a8c;
+        }
+        .complaints-lists-row {
+            display: flex;
+            gap: 18px;
+            width: 100%;
+            margin-top: 28px;
+        }
+        .complaints-list-box {
+            flex: 1;
+            background: #f6f8fa;
+            border-radius: 12px;
+            padding: 18px 16px 10px 16px;
+            box-shadow: 0 2px 12px rgba(44,62,80,0.06);
+            min-width: 0;
+        }
+        .complaints-list-box h3 {
+            color: #159a8c;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+        .complaint-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.06);
+            padding: 12px 14px 10px 14px;
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .complaint-card .complaint-meta {
+            font-size: 0.95rem;
+            color: #6c7a89;
+            display: flex;
+            gap: 16px;
+        }
+        .complaint-card .complaint-image {
+            margin-top: 6px;
+            max-width: 120px;
+        }
+        .complaint-card .complaint-image img {
+            width: 100%;
+            border-radius: 7px;
+            object-fit: contain;
+        }
+        .complaint-card .complaint-status {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #2ec4b6;
+        }
+        @media (max-width: 900px) {
+            .student-panel-box { max-width: 98vw; padding: 10px 2vw; }
+            .complaints-lists-row { flex-direction: column; gap: 12px; }
+        }
+        .talep-form-container {
+            width: 100%;
+            margin-top: 20px;
+            display: flex;
+            gap: 36px;
+        }
+        .talep-form-wrapper {
+            flex: 2;
+        }
+        .dorm-info-card {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(44,62,80,0.1);
+            padding: 24px;
+            backdrop-filter: blur(10px);
+            min-width: 280px;
+        }
+        .dorm-gallery {
+            flex: 1;
+            background: rgba(44,62,80,0.97);
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(44,62,80,0.18);
+            padding: 22px 18px 18px 18px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 220px;
+            max-width: 320px;
+        }
+        .gallery-title {
+            color: #fff;
+            font-size: 1.18rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+        }
+        .gallery-images {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            width: 100%;
+        }
+        .gallery-card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(44,62,80,0.10);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+        .gallery-card:hover {
+            box-shadow: 0 8px 32px rgba(44,62,80,0.18);
+            transform: translateY(-2px) scale(1.03);
+        }
+        .gallery-card img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 12px 12px 0 0;
+        }
+        .gallery-caption {
+            color: #fff;
+            font-size: 1.05rem;
+            font-weight: 500;
+            padding: 10px 0 10px 0;
+            text-align: center;
+            background: rgba(44,62,80,0.7);
+            width: 100%;
+        }
+        @media (max-width: 1200px) {
+            .student-panel-box { max-width: 98vw; padding: 10px 2vw; }
+            .talep-form-container {
+                flex-direction: column;
+                gap: 18px;
+            }
+            .dorm-gallery {
+                width: 100%;
+                max-width: 100%;
+                flex-direction: row;
+                flex-wrap: wrap;
+                box-shadow: 0 4px 16px rgba(44,62,80,0.12);
+            }
+            .gallery-images {
+                flex-direction: row;
+                gap: 18px;
+                justify-content: center;
+            }
+            .gallery-card {
+                width: 160px;
+            }
+        }
+        @media (max-width: 900px) {
+            .student-panel-box { max-width: 98vw; padding: 10px 2vw; }
+            .talep-form-container {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .dorm-gallery {
+                width: 100%;
+                max-width: 100%;
+                box-shadow: 0 4px 16px rgba(44,62,80,0.12);
+            }
+            .gallery-images {
+                flex-direction: row;
+                gap: 12px;
+                justify-content: center;
+            }
+            .gallery-card {
+                width: 120px;
+            }
+            .gallery-card img {
+                height: 80px;
+            }
+        }
+        .dorm-info-card h3 {
+            color: #159a8c;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 12px;
+        }
+        .info-item {
+            margin-bottom: 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .info-item i {
+            color: #2ec4b6;
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+        .info-item-content {
+            flex: 1;
+        }
+        .info-item-content h4 {
+            color: #2c3e50;
+            font-size: 1rem;
+            margin: 0 0 4px 0;
+        }
+        .info-item-content p {
+            color: #6c7a89;
+            margin: 0;
+            font-size: 0.95rem;
+        }
+        .talep-type-selector {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+        .talep-type-btn {
+            flex: 1;
+            padding: 16px 0;
+            border-radius: 15px;
+            border: none;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .talep-type-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        #btn-sikayet {
+            background: linear-gradient(135deg, #ff7675 0%, #e17055 100%);
+        }
+        #btn-arz {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+        }
+        .talep-form {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(44,62,80,0.1);
+            padding: 32px 28px 20px 28px;
+        }
+        .form-group {
+            margin-bottom: 24px;
+        }
+        .form-group label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #2ec4b6;
+            box-shadow: 0 0 0 3px rgba(46,196,182,0.1);
+            outline: none;
+        }
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        .form-group input[type="file"] {
+            margin-top: 8px;
+            padding: 10px;
+            border: 2px dashed #e0e0e0;
+            border-radius: 12px;
+            width: 100%;
+            cursor: pointer;
+        }
+        .btn-primary {
+            width: 100%;
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.2rem;
+            border-radius: 12px;
+            padding: 16px 0;
+            margin-top: 20px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,184,148,0.2);
+        }
+        .announcements-section {
+            width: 100%;
+            margin-top: 32px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(44,62,80,0.1);
+            padding: 24px;
+            backdrop-filter: blur(10px);
+        }
+        .announcements-section h3 {
+            color: #159a8c;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 12px;
+        }
+        .announcement-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.06);
+            padding: 16px;
+            margin-bottom: 16px;
+            border-left: 4px solid #2ec4b6;
+        }
+        .announcement-card:last-child {
+            margin-bottom: 0;
+        }
+        .announcement-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .announcement-title {
+            color: #2c3e50;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        .announcement-date {
+            color: #6c7a89;
+            font-size: 0.9rem;
+        }
+        .announcement-content {
+            color: #34495e;
+            font-size: 1rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+        .announcement-priority {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        .priority-high {
+            background: #ffe0e0;
+            color: #e74c3c;
+        }
+        .priority-medium {
+            background: #fff3cd;
+            color: #f39c12;
+        }
+        .priority-low {
+            background: #e0f7e0;
+            color: #27ae60;
+        }
+        .public-arz-section {
+            width: 100%;
+            margin-top: 32px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(44,62,80,0.1);
+            padding: 24px;
+            backdrop-filter: blur(10px);
+        }
+        .public-arz-section h3 {
+            color: #00b894;
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 12px;
+        }
+        .public-arz-section div {
+            color: #6c7a89;
+            font-size: 0.95rem;
+            margin-top: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="student-panel-box">
+        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
+            <h2>Öğrenci Paneli</h2>
+            <button class="logout-btn" id="logout-btn" style="margin-left: 20px;">Çıkış Yap</button>
+        </div>
+        <div class="student-info" id="student-info"></div>
+        <div class="talep-form-container">
+            <div class="talep-form-wrapper">
+                <h3 style="text-align:center; color:#159a8c; margin-bottom: 18px;">Yeni Talep Oluştur</h3>
+                <div class="talep-type-selector" style="display: flex; gap: 16px; justify-content: center; margin-bottom: 18px;">
+                    <button type="button" id="btn-sikayet" class="talep-type-btn active" style="flex:1; padding: 12px 0; border-radius: 10px; border: none; font-size: 1.1rem; font-weight: 600; background: linear-gradient(90deg, #ff7675 0%, #e17055 100%); color: #fff; box-shadow: 0 2px 8px rgba(225,112,85,0.13); transition: 0.2s;">Şikayet</button>
+                    <button type="button" id="btn-arz" class="talep-type-btn" style="flex:1; padding: 12px 0; border-radius: 10px; border: none; font-size: 1.1rem; font-weight: 600; background: linear-gradient(90deg, #00b894 0%, #00cec9 100%); color: #fff; box-shadow: 0 2px 8px rgba(0,184,148,0.13); transition: 0.2s;">Arz</button>
+                </div>
+                <form id="talep-form" class="talep-form" style="background: #fff; border-radius: 14px; box-shadow: 0 2px 12px rgba(44,62,80,0.06); padding: 22px 18px 10px 18px;">
+                    <div id="sikayet-tur-group" class="form-group">
+                        <label for="sikayet-tur" style="color:#e17055; font-weight:600;">Şikayet Türü</label>
+                        <select id="sikayet-tur" style="border:2px solid #e17055;">
+                            <option value="">Seçiniz</option>
+                            <option value="elektrik">Elektrik</option>
+                            <option value="Su">Su</option>
+                            <option value="Güvenlik">Güvenlik</option>
+                            <option value="Temizlik">Temizlik</option>
+                            <option value="Diğer">Diğer</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="talep-aciklama" style="color:#159a8c; font-weight:600;">Açıklama</label>
+                        <textarea id="talep-aciklama" required placeholder="Açıklamanızı yazınız..." style="border:2px solid #b2f7ef;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="talep-gorsel" style="color:#00b894; font-weight:600;">Görsel (Opsiyonel)</label>
+                        <input type="file" id="talep-gorsel" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label for="offer-visibility"><i class="bi bi-eye"></i> Yayınlama Tercihi</label>
+                        <select id="offer-visibility" required>
+                            <option value="public">public</option>
+                            <option value="private">private</option>
+                        </select>
+                        <small class="form-text text-muted">
+                            <i class="bi bi-info-circle"></i> 
+                            "Herkese Açık" seçeneği ile arzınız tüm kullanıcılar tarafından görüntülenebilir. 
+                            "Yalnızca Yönetici" seçeneği ile arzınız sadece yöneticiler tarafından görüntülenebilir.
+                        </small>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width:100%; background: linear-gradient(90deg, #00b894 0%, #00cec9 100%); color:#fff; font-weight:700; font-size:1.1rem; border-radius:8px; padding:12px 0; margin-top:10px;">Gönder</button>
+                    <div id="talep-form-alert"></div>
+                </form>
+            </div>
+            <div class="dorm-info-card">
+                <h3>Yurt Bilgileri</h3>
+                <div class="info-item">
+                    <i class="bi bi-telephone-fill"></i>
+                    <div class="info-item-content">
+                        <h4>Telefon</h4>
+                        <p>+90 (555) 123 45 67</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    <div class="info-item-content">
+                        <h4>Adres</h4>
+                        <p>Üniversite Mahallesi, Yurt Sokak No:1<br>34000 İstanbul</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="bi bi-calendar-check-fill"></i>
+                    <div class="info-item-content">
+                        <h4>Yapılış Yılı</h4>
+                        <p>2015</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="bi bi-building-fill"></i>
+                    <div class="info-item-content">
+                        <h4>Kapasite</h4>
+                        <p>5000 Öğrenci</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="bi bi-clock-fill"></i>
+                    <div class="info-item-content">
+                        <h4>Çalışma Saatleri</h4>
+                        <p>7/24 Hizmet</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="bi bi-envelope-fill"></i>
+                    <div class="info-item-content">
+                        <h4>E-posta</h4>
+                        <p>destek@dormsupport.edu</p>
+                    </div>
+                </div>
+            </div>
+            <div class="dorm-gallery">
+                <div class="gallery-title">Yurt Görselleri</div>
+                <div class="gallery-images">
+                    <div class="gallery-card">
+                        <img src="images/YURT ODASI.jpg" alt="Yurt Odası">
+                        <div class="gallery-caption">Konforlu Odalar</div>
+                    </div>
+                    <div class="gallery-card">
+                        <img src="images/YURT YEMEKHANESİ.jpg" alt="Yemekhane">
+                        <div class="gallery-caption">Yemekhane</div>
+                    </div>
+                    <div class="gallery-card">
+                        <img src="images/YURT ÇALIŞMA SALONU.jpg" alt="Çalışma Salonu">
+                        <div class="gallery-caption">Çalışma Salonu</div>
+                    </div>
+                    <div class="gallery-card">
+                        <img src="images/YURT SPOR SALONU.jpg" alt="Spor Salonu">
+                        <div class="gallery-caption">Spor Salonu</div>
+                    </div>
+                    <div class="gallery-card">
+                        <img src="images/YURT KANTİNİ.jpg" alt="Kantin">
+                        <div class="gallery-caption">Kantin</div>
+                    </div>
+                    <div class="gallery-card">
+                        <img src="images/YURT DIŞ GÖRÜNÜMÜ.jpg" alt="Yurt Dış Görünümü">
+                        <div class="gallery-caption">Yurt Dış Görünümü</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="complaints-lists-row" style="margin-top: 32px; display: flex; gap: 24px; width: 100%;">
+            <div class="complaints-list-box" id="complaints-list-box" style="flex:1; background: #fff5f5; border-radius: 12px; padding: 18px 16px 10px 16px; box-shadow: 0 2px 12px rgba(225,112,85,0.06); min-width: 0;">
+                <h3 style="color:#e17055; text-align:center;">Geçmiş Şikayetlerim</h3>
+                <div id="complaints-list"></div>
+            </div>
+            <div class="complaints-list-box" id="arz-list-box" style="flex:1; background: #f0fff4; border-radius: 12px; padding: 18px 16px 10px 16px; box-shadow: 0 2px 12px rgba(0,184,148,0.06); min-width: 0;">
+                <h3 style="color:#00b894; text-align:center;">Geçmiş Arzlarım</h3>
+                <div id="arz-list"></div>
+            </div>
+        </div>
+        
+        <div class="announcements-section">
+            <h3>Duyurular</h3>
+            <div id="announcements-list"></div>
+        </div>
+        <div class="public-arz-section">
+            <h3>Diğer Öğrencilerden Gelen Arzlar</h3>
+            <div id="public-arz-list"></div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Supabase istemcisini global olarak tanımla
+        const supabaseUrl = 'https://ymmfzxmvddrwkqspmptl.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InltbWZ6eG12ZGRyd2txc3BtcHRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUzOTk0NTgsImV4cCI6MjA2MDk3NTQ1OH0.W4YE-T2UifvFMtERULUcNdLcIfL0mJQ4ZwQqR2xqguI';
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        const student = JSON.parse(localStorage.getItem('student'));
+        if (!student) {
+            window.location.href = 'student-login.html';
+        }
+        const infoDiv = document.getElementById('student-info');
+        if (student) {
+            infoDiv.innerHTML = `
+                <b>Hoş geldin, ${student.name} ${student.surname}!</b><br>
+                <span>Öğrenci No: ${student.student_no}</span><br>
+                <span>Oda No: ${student.room_no || '-'} </span>
+            `;
+        } else {
+            infoDiv.innerHTML = 'Oturum bulunamadı. Lütfen tekrar giriş yapın.';
+        }
+        document.getElementById('logout-btn').addEventListener('click', function() {
+            localStorage.removeItem('student');
+            window.location.href = 'student-login.html';
+        });
+
+        // Sekme geçişleri
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(tc => tc.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById(btn.dataset.tab + '-tab').classList.add('active');
+            });
+        });
+
+        // Talep türü seçimi
+        const btnSikayet = document.getElementById('btn-sikayet');
+        const btnArz = document.getElementById('btn-arz');
+        const sikayetTurGroup = document.getElementById('sikayet-tur-group');
+        const offerVisibilityGroup = document.getElementById('offer-visibility').parentElement;
+        let currentType = 'şikayet';
+        function updateTypeButtons() {
+            if(currentType === 'şikayet') {
+                btnSikayet.classList.add('active');
+                btnSikayet.style.background = 'linear-gradient(90deg, #ff7675 0%, #e17055 100%)';
+                btnArz.classList.remove('active');
+                btnArz.style.background = 'linear-gradient(90deg, #00b894 0%, #00cec9 100%)';
+                sikayetTurGroup.style.display = '';
+                offerVisibilityGroup.style.display = 'none';
+            } else {
+                btnArz.classList.add('active');
+                btnArz.style.background = 'linear-gradient(90deg, #00b894 0%, #00cec9 100%)';
+                btnSikayet.classList.remove('active');
+                btnSikayet.style.background = 'linear-gradient(90deg, #ff7675 0%, #e17055 100%)';
+                sikayetTurGroup.style.display = 'none';
+                offerVisibilityGroup.style.display = '';
+            }
+        }
+        btnSikayet.addEventListener('click', function() {
+            currentType = 'şikayet';
+            updateTypeButtons();
+        });
+        btnArz.addEventListener('click', function() {
+            currentType = 'arz';
+            updateTypeButtons();
+        });
+        // Başlangıçta şikayet türü alanı açık, yayınlama tercihi kapalı
+        sikayetTurGroup.style.display = '';
+        offerVisibilityGroup.style.display = 'none';
+        updateTypeButtons();
+
+        // Talep formu gönderimi
+        const talepForm = document.getElementById('talep-form');
+        talepForm?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const category = currentType === 'şikayet' ? document.getElementById('sikayet-tur').value : null;
+            const desc = document.getElementById('talep-aciklama').value;
+            const imageInput = document.getElementById('talep-gorsel');
+            let imageBase64 = null;
+            if (imageInput.files && imageInput.files[0]) {
+                const file = imageInput.files[0];
+                if (file.size > 5 * 1024 * 1024) {
+                    showAlert('talep-form-alert', 'Görsel 5MB dan büyük olamaz!', false);
+                    return;
+                }
+                imageBase64 = await toBase64(file);
+            }
+
+            try {
+                const visibility = currentType === 'arz' ? document.getElementById('offer-visibility').value : 'private';
+                const { data, error } = await supabase
+                    .from('complaints')
+                    .insert([{
+                        student_id: student.id,
+                        type: currentType,
+                        category: category,
+                        description: desc,
+                        image: imageBase64,
+                        status: 'beklemede',
+                        visibility: visibility,
+                        created_at: new Date().toISOString()
+                    }]);
+                if (error) throw error;
+                showAlert('talep-form-alert', (currentType === 'şikayet' ? 'Şikayet' : 'Arz') + ' başarıyla gönderildi!', true);
+                showGlobalAlert((currentType === 'şikayet' ? 'Şikayet' : 'Arz') + ' başarıyla gönderildi!', true);
+                talepForm.reset();
+                loadComplaints();
+            } catch (err) {
+                console.error('Hata detayı:', err);
+                showAlert('talep-form-alert', 'Bir hata oluştu, tekrar deneyin.', false);
+                showGlobalAlert('Bir hata oluştu, tekrar deneyin.', false);
+            }
+        });
+        function showAlert(id, msg, success) {
+            const el = document.getElementById(id);
+            el.innerHTML = `<div class="alert ${success ? 'alert-success' : 'alert-error'}">${msg}</div>`;
+            setTimeout(() => { el.innerHTML = ''; }, 3500);
+        }
+        function toBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+        // Şikayet ve arzları yükle ve göster
+        async function loadComplaints() {
+            const complaintsListDiv = document.getElementById('complaints-list');
+            const arzListDiv = document.getElementById('arz-list');
+            
+            if (!student) return;
+            
+            try {
+                const { data, error } = await supabase
+                    .from('complaints')
+                    .select('id, student_id, type, category, description, image, status, visibility, created_at')
+                    .eq('student_id', student.id)
+                    .order('created_at', { ascending: false });
+
+                if (error) {
+                    console.error('Supabase hatası:', error);
+                    throw error;
+                }
+
+                if (!data || data.length === 0) {
+                    complaintsListDiv.innerHTML = '<div>Şikayet bulunamadı.</div>';
+                    arzListDiv.innerHTML = '<div>Arz bulunamadı.</div>';
+                    return;
+                }
+
+                const complaints = data.filter(c => c.type === 'şikayet');
+                const arzlar = data.filter(c => c.type === 'arz');
+
+                // Şikayetleri göster
+                complaintsListDiv.innerHTML = complaints.length === 0 ? 
+                    '<div>Şikayet bulunamadı.</div>' : 
+                    complaints.map(c => `
+                        <div class="complaint-card" style="background:#fff; border-radius:10px; box-shadow:0 2px 8px rgba(225,112,85,0.08); margin-bottom:12px; padding:14px 12px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="color:#e17055; font-weight:700;">Şikayet</span>
+                                <span style="font-size:0.95rem; font-weight:600; color:#2ec4b6;">${c.status || 'Beklemede'}</span>
+                            </div>
+                            <div style="margin:6px 0 2px 0;"><b>Kategori:</b> ${c.category || '-'}</div>
+                            <div><b>Açıklama:</b> ${c.description}</div>
+                            <div style="font-size:0.95rem; color:#6c7a89; margin-top:4px;">
+                                <i class="bi bi-calendar"></i> ${new Date(c.created_at).toLocaleDateString('tr-TR')} &nbsp;
+                                <i class="bi bi-clock"></i> ${new Date(c.created_at).toLocaleTimeString('tr-TR')}
+                            </div>
+                            ${c.image ? `<div style='margin-top:6px; max-width:120px;'><img src="${c.image}" alt="Görsel" style="width:100%; border-radius:7px; object-fit:contain;"></div>` : ''}
+                            ${c.student_id === student.id ? `<button class="delete-btn" data-id="${c.id}" style="margin-top:8px; background:#e74c3c; color:#fff; border:none; border-radius:6px; padding:6px 12px; cursor:pointer;">Sil</button>` : ''}
+                        </div>
+                    `).join('');
+
+                // Arzları göster
+                arzListDiv.innerHTML = arzlar.length === 0 ? 
+                    '<div>Arz bulunamadı.</div>' : 
+                    arzlar.map(c => `
+                        <div class="complaint-card" style="background:#fff; border-radius:10px; box-shadow:0 2px 8px rgba(0,184,148,0.08); margin-bottom:12px; padding:14px 12px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="color:#00b894; font-weight:700;">Arz</span>
+                                <span style="font-size:0.95rem; font-weight:600; color:#2ec4b6;">${c.status || 'Beklemede'}</span>
+                            </div>
+                            <div><b>Açıklama:</b> ${c.description}</div>
+                            <div style="font-size:0.95rem; color:#6c7a89; margin-top:4px;">
+                                <i class="bi bi-calendar"></i> ${new Date(c.created_at).toLocaleDateString('tr-TR')} &nbsp;
+                                <i class="bi bi-clock"></i> ${new Date(c.created_at).toLocaleTimeString('tr-TR')}
+                            </div>
+                            ${c.image ? `<div style='margin-top:6px; max-width:120px;'><img src="${c.image}" alt="Görsel" style="width:100%; border-radius:7px; object-fit:contain;"></div>` : ''}
+                            ${c.student_id === student.id ? `<button class="delete-btn" data-id="${c.id}" style="margin-top:8px; background:#e74c3c; color:#fff; border:none; border-radius:6px; padding:6px 12px; cursor:pointer;">Sil</button>` : ''}
+                        </div>
+                    `).join('');
+
+            } catch (err) {
+                console.error('Veri yükleme hatası:', err);
+                complaintsListDiv.innerHTML = '<div>Veriler yüklenirken bir hata oluştu.</div>';
+                arzListDiv.innerHTML = '<div>Veriler yüklenirken bir hata oluştu.</div>';
+            }
+        }
+        loadComplaints();
+
+        // Duyuruları yükle
+        async function loadAnnouncements() {
+            const supabaseUrl = 'https://ymmfzxmvddrwkqspmptl.supabase.co';
+            const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InltbWZ6eG12ZGRyd2txc3BtcHRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUzOTk0NTgsImV4cCI6MjA2MDk3NTQ1OH0.W4YE-T2UifvFMtERULUcNdLcIfL0mJQ4ZwQqR2xqguI';
+            const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+            
+            const announcementsListDiv = document.getElementById('announcements-list');
+            
+            try {
+                const { data, error } = await supabase
+                    .from('announcements')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                
+                if (!data || data.length === 0) {
+                    announcementsListDiv.innerHTML = '<div style="text-align: center; color: #6c7a89;">Henüz duyuru bulunmuyor.</div>';
+                    return;
+                }
+                
+                announcementsListDiv.innerHTML = data.map(announcement => `
+                    <div class="announcement-card">
+                        <div class="announcement-header">
+                            <h4 class="announcement-title">
+                                ${announcement.title}
+                                <span class="announcement-priority priority-${announcement.priority}">
+                                    ${announcement.priority === 'high' ? 'Acil' : 
+                                      announcement.priority === 'medium' ? 'Önemli' : 'Normal'}
+                                </span>
+                            </h4>
+                            <span class="announcement-date">
+                                <i class="bi bi-calendar"></i> 
+                                ${new Date(announcement.created_at).toLocaleDateString('tr-TR')}
+                            </span>
+                        </div>
+                        <p class="announcement-content">${announcement.content}</p>
+                    </div>
+                `).join('');
+            } catch (err) {
+                announcementsListDiv.innerHTML = '<div style="text-align: center; color: #e74c3c;">Duyurular yüklenirken bir hata oluştu.</div>';
+            }
+        }
+        
+        // Sayfa yüklendiğinde duyuruları yükle
+        loadAnnouncements();
+
+        async function loadPublicArzlar() {
+            const publicArzListDiv = document.getElementById('public-arz-list');
+            try {
+                const { data, error } = await supabase
+                    .from('complaints')
+                    .select('id, student_id, type, category, description, image, created_at')
+                    .eq('type', 'arz')
+                    .eq('visibility', 'public')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                if (!data || data.length === 0) {
+                    publicArzListDiv.innerHTML = '<div style="text-align:center; color:#6c7a89;">Henüz public arz yok.</div>';
+                    return;
+                }
+
+                // Her arz için oylama ve sonuçları yükle
+                publicArzListDiv.innerHTML = '';
+                for (const c of data) {
+                    // Öğrencinin bu arza oy verip vermediğini kontrol et
+                    const { data: myVote } = await supabase
+                        .from('votes')
+                        .select('option')
+                        .eq('student_id', student.id)
+                        .eq('complaint_id', c.id)
+                        .maybeSingle();
+
+                    // Tüm oyları çek
+                    const { data: allVotes } = await supabase
+                        .from('votes')
+                        .select('option')
+                        .eq('complaint_id', c.id);
+
+                    // Oylama seçenekleri
+                    const options = [
+                        { value: 'mükemmel', label: 'Mükemmel olur' },
+                        { value: 'iyi', label: 'İyi olur' },
+                        { value: 'farketmez', label: 'Fark etmez' },
+                        { value: 'olmasın', label: 'Olmasın' }
+                    ];
+
+                    // Sonuçları hesapla
+                    const counts = { mükemmel: 0, iyi: 0, farketmez: 0, olmasın: 0 };
+                    allVotes?.forEach(v => { if (counts[v.option] !== undefined) counts[v.option]++; });
+                    const totalVotes = allVotes?.length || 0;
+
+                    // Sonuçlar HTML
+                    let resultsHTML = '';
+                    if (totalVotes > 0) {
+                        resultsHTML = `<div style='margin-top:10px;'>${options.map(opt => {
+                            const count = counts[opt.value] || 0;
+                            const percent = totalVotes > 0 ? Math.round((count / totalVotes) * 100) : 0;
+                            return `<div style='margin-bottom:4px;'><b>${opt.label}:</b> ${count} oy (${percent}%)<div style='height:8px; background:#e0e0e0; border-radius:4px; margin-top:2px;'><div style='width:${percent}%; background:#00b894; height:8px; border-radius:4px;'></div></div></div>`;
+                        }).join('')}</div>`;
+                    } else {
+                        resultsHTML = `<div style='margin-top:10px; color:#aaa;'>Henüz oy yok.</div>`;
+                    }
+
+                    // Oylama formu
+                    let votingHTML = '';
+                    if (!myVote) {
+                        votingHTML = `
+                            <form class='vote-form' data-arz-id='${c.id}' style='margin-top:12px;'>
+                                ${options.map(opt => `
+                                    <label style='display:block; margin-bottom:6px;'>
+                                        <input type='radio' name='vote-option-${c.id}' value='${opt.value}' required style='margin-right:8px;'>
+                                        ${opt.label}
+                                    </label>
+                                `).join('')}
+                                <button type='submit' style='margin-top:8px; background:#00b894; color:#fff; border:none; border-radius:7px; padding:7px 18px; font-weight:600; font-size:1rem; cursor:pointer;'>Oy Gönder</button>
+                            </form>
+                        `;
+                    } else {
+                        votingHTML = `<div style='margin-top:12px; color:#00b894; font-weight:600;'>Oyunuz: ${options.find(o => o.value === myVote.option)?.label || myVote.option}</div>`;
+                    }
+
+                    publicArzListDiv.innerHTML += `
+                        <div class="complaint-card" style="background:#fff; border-radius:10px; box-shadow:0 2px 8px rgba(0,184,148,0.08); margin-bottom:12px; padding:14px 12px;">
+                            <div style="font-size:0.95rem; color:#6c7a89; margin-bottom:4px;">
+                                <i class="bi bi-calendar"></i> ${new Date(c.created_at).toLocaleDateString('tr-TR')}
+                                <i class="bi bi-clock"></i> ${new Date(c.created_at).toLocaleTimeString('tr-TR')}
+                            </div>
+                            <div><b>Açıklama:</b> ${c.description}</div>
+                            ${c.image ? `<div style='margin-top:6px; max-width:120px;'><img src="${c.image}" alt="Görsel" style="width:100%; border-radius:7px; object-fit:contain;"></div>` : ''}
+                            ${votingHTML}
+                            ${resultsHTML}
+                        </div>
+                    `;
+                }
+
+                // Oylama form submit eventlerini ekle
+                document.querySelectorAll('.vote-form').forEach(form => {
+                    form.addEventListener('submit', async function(e) {
+                        e.preventDefault();
+                        const arzId = form.getAttribute('data-arz-id');
+                        const selected = form.querySelector('input[type="radio"]:checked');
+                        if (!selected) return;
+                        const option = selected.value;
+                        // Oy kaydet
+                        const { error } = await supabase
+                            .from('votes')
+                            .insert([{ student_id: student.id, complaint_id: arzId, option }]);
+                        if (error) {
+                            alert('Oy kaydedilemedi!');
+                        } else {
+                            loadPublicArzlar();
+                        }
+                    });
+                });
+            } catch (err) {
+                publicArzListDiv.innerHTML = '<div style="text-align:center; color:#e74c3c;">Arzlar yüklenirken bir hata oluştu.</div>';
+            }
+        }
+
+        // Sayfa yüklenince bu fonksiyonu çağır
+        loadPublicArzlar();
+
+        document.addEventListener('click', async function(e) {
+            if (e.target.classList.contains('delete-btn')) {
+                const kayitId = e.target.getAttribute('data-id');
+                if (confirm('Kaydı silmek istediğinize emin misiniz?')) {
+                    const { error } = await supabase
+                        .from('complaints')
+                        .delete()
+                        .eq('id', kayitId);
+                    if (!error) {
+                        alert('Kaydınız başarıyla silindi.');
+                        loadComplaints();
+                        loadPublicArzlar && loadPublicArzlar();
+                    } else {
+                        alert('Kayıt silinemedi! (Sadece kendi kaydınızı silebilirsiniz)');
+                    }
+                }
+            }
+        });
+    });
+
+    // Sayfanın üstünde kısa süreli genel bilgilendirme mesajı fonksiyonu ekle
+    function showGlobalAlert(message, success = true) {
+        let alertDiv = document.getElementById('global-alert');
+        if (!alertDiv) {
+            alertDiv = document.createElement('div');
+            alertDiv.id = 'global-alert';
+            alertDiv.style.position = 'fixed';
+            alertDiv.style.top = '30px';
+            alertDiv.style.left = '50%';
+            alertDiv.style.transform = 'translateX(-50%)';
+            alertDiv.style.zIndex = '9999';
+            alertDiv.style.padding = '16px 32px';
+            alertDiv.style.borderRadius = '10px';
+            alertDiv.style.fontSize = '1.1rem';
+            alertDiv.style.fontWeight = '600';
+            alertDiv.style.boxShadow = '0 4px 24px rgba(44,62,80,0.18)';
+            document.body.appendChild(alertDiv);
+        }
+        alertDiv.style.background = success ? '#27ae60' : '#e74c3c';
+        alertDiv.style.color = '#fff';
+        alertDiv.textContent = message;
+        alertDiv.style.display = 'block';
+        setTimeout(() => { alertDiv.style.display = 'none'; }, 2500);
+    }
+    </script>
+</body>
+</html> 

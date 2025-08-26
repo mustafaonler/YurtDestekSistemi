@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Öğrenci Giriş | DormSupport</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+        .background-image {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80') center center/cover no-repeat;
+        }
+        .background-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            background: rgba(30, 44, 60, 0.55);
+            backdrop-filter: blur(3px);
+        }
+        .login-center-box {
+            max-width: 370px;
+            margin: 7vh auto;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 4px 32px rgba(44,62,80,0.13);
+            padding: 36px 28px 28px 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            position: relative;
+            z-index: 2;
+        }
+        .login-center-box h2 {
+            text-align: center;
+            color: #159a8c;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        .login-center-box .form-group {
+            margin-bottom: 14px;
+        }
+        .login-center-box .form-group label {
+            font-size: 1rem;
+            color: #159a8c;
+            font-weight: 500;
+        }
+        .login-center-box .form-group input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 7px;
+            font-size: 1rem;
+            margin-top: 2px;
+        }
+        .login-center-box .password-input {
+            position: relative;
+        }
+        .login-center-box .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #b2bfc9;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+        .login-center-box .btn-primary {
+            width: 100%;
+            background: #2ec4b6;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .login-center-box .btn-primary:hover {
+            background: #159a8c;
+        }
+        .login-center-box .register-link {
+            text-align: center;
+            margin-top: 10px;
+            color: #159a8c;
+            font-size: 1rem;
+        }
+        .login-center-box .register-link a {
+            color: #e71d36;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        /* Modal kayıt formu */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(44,62,80,0.18);
+            backdrop-filter: blur(2px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-box {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 8px 40px rgba(44,62,80,0.18);
+            padding: 32px 24px 24px 24px;
+            min-width: 320px;
+            max-width: 95vw;
+            position: relative;
+            animation: fadeIn 0.3s;
+        }
+        .modal-close {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: #b2bfc9;
+            cursor: pointer;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-image"></div>
+    <div class="background-overlay"></div>
+    <div class="login-center-box">
+        <h2>Öğrenci Girişi</h2>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="login-tc"><i class="bi bi-person-badge"></i> TC Kimlik No</label>
+                <input type="text" id="login-tc" required maxlength="11" pattern="[0-9]{11}" placeholder="TC Kimlik Numaranızı giriniz">
+            </div>
+            <div class="form-group">
+                <label for="login-student-no"><i class="bi bi-123"></i> Öğrenci Numarası</label>
+                <input type="text" id="login-student-no" required placeholder="Öğrenci Numaranızı giriniz">
+            </div>
+            <div class="form-group">
+                <label for="login-password"><i class="bi bi-key"></i> Şifre</label>
+                <div class="password-input">
+                    <input type="password" id="login-password" required placeholder="Şifrenizi giriniz">
+                    <span class="toggle-password"><i class="bi bi-eye"></i></span>
+                </div>
+            </div>
+            <button type="submit" class="btn-primary">Giriş Yap</button>
+        </form>
+        <div class="register-link">
+            Hesabınız yok mu? <a id="open-register-modal">Kayıt Ol</a>
+        </div>
+        <div class="home-link" style="text-align: center; margin-top: 10px;">
+            <a href="index.html" style="color: #159a8c; text-decoration: none;">
+                <i class="bi bi-house"></i> Anasayfaya Dön
+            </a>
+        </div>
+    </div>
+
+    <!-- Kayıt Modalı -->
+    <div class="modal-overlay" id="register-modal">
+        <div class="modal-box">
+            <button class="modal-close" id="close-register-modal"><i class="bi bi-x-lg"></i></button>
+            <h2 style="text-align:center;color:#159a8c;">Kayıt Ol</h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="register-tc"><i class="bi bi-person-badge"></i> TC Kimlik No</label>
+                    <input type="text" id="register-tc" required 
+                        maxlength="11" 
+                        minlength="11"
+                        pattern="[0-9]{11}" 
+                        oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 11) this.value = this.value.slice(0,11);"
+                        title="TC Kimlik No tam olarak 11 haneli olmalıdır"
+                        placeholder="TC Kimlik Numaranızı giriniz">
+                </div>
+                <div class="form-group">
+                    <label for="register-student-no"><i class="bi bi-123"></i> Öğrenci Numarası</label>
+                    <input type="text" id="register-student-no" required 
+                        maxlength="9" 
+                        minlength="9"
+                        pattern="[0-9]{9}" 
+                        oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value.length > 9) this.value = this.value.slice(0,9);"
+                        title="Öğrenci numarası tam olarak 9 haneli olmalıdır"
+                        placeholder="Öğrenci Numaranızı giriniz">
+                </div>
+                <div class="form-group">
+                    <label for="register-name"><i class="bi bi-person"></i> Ad</label>
+                    <input type="text" id="register-name" required placeholder="Adınızı giriniz">
+                </div>
+                <div class="form-group">
+                    <label for="register-surname"><i class="bi bi-person"></i> Soyad</label>
+                    <input type="text" id="register-surname" required placeholder="Soyadınızı giriniz">
+                </div>
+                <div class="form-group">
+                    <label for="register-room"><i class="bi bi-door-open"></i> Oda Numarası</label>
+                    <input type="text" id="register-room" required placeholder="Oda Numaranızı giriniz">
+                </div>
+                <div class="form-group">
+                    <label for="register-password"><i class="bi bi-key"></i> Şifre</label>
+                    <div class="password-input">
+                        <input type="password" id="register-password" required placeholder="Şifrenizi oluşturunuz">
+                        <span class="toggle-password"><i class="bi bi-eye"></i></span>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary">Kayıt Ol</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script>
+        // Form doğrulama fonksiyonları
+        function validateTC(tc) {
+            return /^[0-9]{11}$/.test(tc);
+        }
+
+        function validateStudentNo(studentNo) {
+            return /^[0-9]{9}$/.test(studentNo);
+        }
+
+        // Hata mesajı gösterme fonksiyonu
+        let isShowingError = false;
+        function showError(message, inputElement) {
+            if (!isShowingError) {
+                isShowingError = true;
+                alert(message);
+                inputElement.focus();
+                setTimeout(() => {
+                    isShowingError = false;
+                }, 100);
+            }
+        }
+
+        // Öğrenci numarası input kontrolü
+        const studentNoInput = document.getElementById('register-student-no');
+        
+        studentNoInput.addEventListener('input', function(e) {
+            // Sadece sayı girişine izin ver
+            this.value = this.value.replace(/[^0-9]/g, '');
+            
+            // 9 haneden fazla girişi engelle
+            if (this.value.length > 9) {
+                this.value = this.value.slice(0, 9);
+            }
+            
+            // 9 haneden az ise input'u kırmızı yap
+            if (this.value.length !== 9) {
+                this.style.borderColor = 'red';
+                this.setCustomValidity('Öğrenci numarası tam olarak 9 haneli olmalıdır!');
+            } else {
+                this.style.borderColor = '';
+                this.setCustomValidity('');
+            }
+        });
+
+        studentNoInput.addEventListener('blur', function(e) {
+            if (this.value.length !== 9) {
+                showError('Öğrenci numarası tam olarak 9 haneli olmalıdır!', this);
+            }
+        });
+
+        // TC Kimlik input kontrolü
+        const tcInput = document.getElementById('register-tc');
+        
+        tcInput.addEventListener('input', function(e) {
+            // Sadece sayı girişine izin ver
+            this.value = this.value.replace(/[^0-9]/g, '');
+            
+            // 11 haneden fazla girişi engelle
+            if (this.value.length > 11) {
+                this.value = this.value.slice(0, 11);
+            }
+            
+            // 11 haneden az ise input'u kırmızı yap
+            if (this.value.length !== 11) {
+                this.style.borderColor = 'red';
+                this.setCustomValidity('TC Kimlik No tam olarak 11 haneli olmalıdır!');
+            } else {
+                this.style.borderColor = '';
+                this.setCustomValidity('');
+            }
+        });
+
+        tcInput.addEventListener('blur', function(e) {
+            if (this.value.length !== 11) {
+                showError('TC Kimlik No tam olarak 11 haneli olmalıdır!', this);
+            }
+        });
+
+        // Form submit öncesi son kontrol
+        document.getElementById('register-form').addEventListener('submit', function(e) {
+            const tc = document.getElementById('register-tc').value;
+            const studentNo = document.getElementById('register-student-no').value;
+            
+            if (tc.length !== 11) {
+                e.preventDefault();
+                showError('TC Kimlik No tam olarak 11 haneli olmalıdır!', document.getElementById('register-tc'));
+                return false;
+            }
+            
+            if (studentNo.length !== 9) {
+                e.preventDefault();
+                showError('Öğrenci numarası tam olarak 9 haneli olmalıdır!', document.getElementById('register-student-no'));
+                return false;
+            }
+        });
+    </script>
+    <script src="student-login.js"></script>
+</body>
+</html> 
