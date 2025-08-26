@@ -20,7 +20,7 @@ Uygulamanın arayüzünü daha iyi anlamanız için bazı ekran görüntülerini
 
 ### 🏡 Anasayfa & Giriş Ekranları
 Uygulamanın ana sayfası ve öğrenci/admin giriş modülleri.
-![Anasayfa](images/![WhatsApp Görsel 2025-08-26 saat 14 54 27_812e2b26](https://github.com/user-attachments/assets/b75ef824-2c41-44e5-85d8-ebf2c69dfee1)
+![WhatsApp Görsel 2025-08-26 saat 14 54 27_812e2b26](https://github.com/user-attachments/assets/b75ef824-2c41-44e5-85d8-ebf2c69dfee1)
 
 )
 
