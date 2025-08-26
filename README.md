@@ -10,7 +10,8 @@ Uygulamanın arayüzünü daha iyi anlamanız için bazı ekran görüntülerini
 
 ### Anasayfa ve Giriş Ekranları
 Uygulamanın ana sayfası ve öğrenci/admin giriş modülleri.
-![Anasayfa](images/anasayfa.png)
+![Anasayfa](images/![WhatsApp Görsel 2025-08-26 saat 14 54 27_812e2b26](https://github.com/user-attachments/assets/34f7ba34-29d9-4864-ba75-0cd2e51bd2be)
+)
 
 ### Öğrenci Paneli
 Öğrencilerin kendi taleplerini oluşturduğu ve görüntülediği ekran.
