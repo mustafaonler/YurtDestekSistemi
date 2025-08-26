@@ -1,4 +1,15 @@
-# Yurt Destek Sistemi
+<div align="center">
+  <img src="images/logo.png" alt="Proje Logosu" width="150" />
+  <h1>Yurt Destek Sistemi</h1>
+  <p>Öğrenciler için şikayet ve arz bildirimi, yöneticiler için ise tüm talepleri yönetme paneli.</p>
+  
+  [![GitHub Yıldızı](https://img.shields.io/github/stars/KULLANICI_ADINIZ/YurtDestekSistemi?style=social)](https://github.com/KULLANICI_ADINIZ/YurtDestekSistemi/stargazers)
+  [![Lisans](https://img.shields.io/github/license/KULLANICI_ADINIZ/YurtDestekSistemi)](https://github.com/KULLANICI_ADINIZ/YurtDestekSistemi/blob/main/LICENSE)
+</div>
+
+---
+
+## ✨ Proje Hakkında
 
 Bu proje, öğrencilerin yurt yönetimine kolayca şikayet ve arz bildirimleri oluşturmasını, yöneticilerin ise bu talepleri tek bir panelden etkin bir şekilde yönetmesini sağlayan kapsamlı bir web uygulamasıdır. Sistem, şikayetlerin durum takibini kolaylaştırırken, duyurular aracılığıyla iletişimi güçlendirmeyi amaçlar.
 
@@ -8,81 +19,39 @@ Bu proje, öğrencilerin yurt yönetimine kolayca şikayet ve arz bildirimleri o
 
 Uygulamanın arayüzünü daha iyi anlamanız için bazı ekran görüntülerini aşağıda bulabilirsiniz.
 
-### Anasayfa ve Giriş Ekranları
+### 🏡 Anasayfa & Giriş Ekranları
 Uygulamanın ana sayfası ve öğrenci/admin giriş modülleri.
-![Anasayfa](images/![WhatsApp Görsel 2025-08-26 saat 14 54 27_812e2b26](https://github.com/user-attachments/assets/34f7ba34-29d9-4864-ba75-0cd2e51bd2be)
-)
+![Anasayfa](images/anasayfa.png)
 
-### Öğrenci Paneli
+### 🧑‍🎓 Öğrenci Paneli
 Öğrencilerin kendi taleplerini oluşturduğu ve görüntülediği ekran.
 ![Öğrenci Paneli](images/ogrenci_paneli.png)
 
-### Admin Paneli: Talepleri Yönetme
+### 👨‍💼 Admin Paneli: Talepleri Yönetme
 Yöneticilerin tüm talepleri filtreleyip yönettiği ana kontrol paneli.
 ![Admin Paneli](images/admin_paneli.png)
 
-### Duyuru Yönetimi
+### 📢 Duyuru Yönetimi
 Admin panelinde duyuru ekleme ve silme işlemleri.
 ![Duyuru Yönetimi](images/duyuru_yonetimi.png)
 
-### Kamu Arzları ve Oylama
+### 🗳️ Kamu Arzları & Oylama
 Public arzların oylama sonuçlarının görselleştirilmesi.
 ![Kamu Arzları Oylama](images/kamu_arzları.png)
 
-### Durum Güncelleme
+### ✅ Durum Güncelleme
 Admin panelinde bir talebin durumunu güncelleme.
-![Durum Güncelleme](images/durum_guncelleme.gesi)
+![Durum Güncelleme](images/durum_guncelleme.png)
 
 ---
 
-## 🎯 Temel Özellikler
-
-### Öğrenci İşlemleri
-- **Kayıt ve Giriş:** TC, öğrenci numarası ve şifre ile güvenli kayıt ve giriş.
-- **Talep Oluşturma:** Açıklama, kategori ve tür belirterek (şikayet/arz) talep oluşturma. İsteğe bağlı görsel yükleme imkanı.
-- **Talepleri Görüntüleme:** Oluşturulan tüm talepleri tarih sırasına göre listeleme ve durum takibi.
-
-### Yönetici (Admin) Paneli
-- **Giriş:** Yetkili kullanıcılar için güvenli giriş paneli.
-- **Talepleri Yönetme:** Tüm öğrenci taleplerini tür (şikayet/arz), kategori ve durum bazlı filtreleme.
-- **Durum Güncelleme:** Taleplerin durumunu (**bekleniyor**, **ilgileniliyor**, **tamamlandı**) kolayca güncelleme.
-- **Talep Silme:** Gereksiz veya hatalı talepleri sistemden kaldırma.
-- **Duyuru Yönetimi:** Yeni duyurular ekleme, mevcut duyuruları listeleme ve silme.
-
-### Ortak Özellikler
-- **Public/Private Arzlar:** Public arzlar için oylama sonuçlarının görselleştirilmesi, private arzların gizli tutulması.
-- **Modern Arayüz:** Kullanıcı dostu ve modern arayüz bileşenleri ile zenginleştirilmiş tasarım.
-- **Anasayfa:** Kullanıcıları öğrenci ve admin giriş sayfalarına yönlendiren temiz ve bilgilendirici bir ana sayfa.
-
----
-
-## ⚙️ Teknoloji Yığını
+## 🛠️ Teknoloji Yığını
 
 Proje, modern ve hafif bir teknoloji yığını ile geliştirilmiştir.
 
-- **Frontend:**
-  - HTML5, CSS3, JavaScript
-  - [Supabase JS v2](https://supabase.com/docs/guides/client)
-- **Backend:**
-  - [Node.js](https://nodejs.org/) ve [Express.js](https://expressjs.com/) (statik dosya sunumu için)
-- **Veritabanı:**
-  - [Supabase](https://supabase.com/): PostgreSQL veritabanı ve API hizmetleri
-
----
-
-## 📂 Veritabanı Şeması
-
-Proje verileri, Supabase'deki aşağıdaki tablolarda organize edilmiştir:
-
-| Tablo Adı      | Açıklama                                       |
-|----------------|------------------------------------------------|
-| `students`     | Öğrenci kayıt bilgileri                        |
-| `admins`       | Yönetici kullanıcı bilgileri                   |
-| `complaints`   | Öğrenciler tarafından oluşturulan talepler     |
-| `announcements`| Yöneticiler tarafından yayınlanan duyurular    |
-| `votes`        | Public arzlar için oylama verileri             |
-
-> **Güvenlik Notu:** Veritabanı güvenliği için **Row Level Security (RLS)** kuralları uygulanmalıdır. Aksi takdirde, Supabase `anon` anahtarı ile verilere herkes erişebilir.
+**Frontend:** HTML5, CSS3, JavaScript, [Supabase JS v2](https://supabase.com/docs/guides/client)
+**Backend:** [Node.js](https://nodejs.org/) & [Express.js](https://expressjs.com/) (statik dosya sunumu için)
+**Veritabanı:** [Supabase](https://supabase.com/): PostgreSQL veritabanı ve API hizmetleri
 
 ---
 
@@ -91,13 +60,11 @@ Proje verileri, Supabase'deki aşağıdaki tablolarda organize edilmiştir:
 Projeyi yerel makinenizde çalıştırmak için aşağıdaki adımları izleyin.
 
 ### Ön Koşullar
-
 - [Node.js](https://nodejs.org/en/download/) (v14 veya üzeri)
 - [Supabase Projesi](https://supabase.com/)
 - Vercel CLI (İsteğe bağlı, yerel sunucu için)
 
-### Kurulum Adımları
-
+### Adım Adım Kurulum
 1.  Bu depoyu klonlayın:
     ```bash
     git clone [https://github.com/KULLANICI_ADINIZ/YurtDestekSistemi.git](https://github.com/KULLANICI_ADINIZ/YurtDestekSistemi.git)
@@ -114,14 +81,11 @@ Projeyi yerel makinenizde çalıştırmak için aşağıdaki adımları izleyin.
     VITE_SUPABASE_URL="SUPABASE_PROJE_URL'NİZ"
     VITE_SUPABASE_ANON_KEY="SUPABASE_ANON_KEY'İNİZ"
     ```
-    (Not: Değişken adları projenizdeki isimlendirmeye göre değişebilir.)
 
 4.  Projeyi başlatın:
     ```bash
     npm start
     ```
-    Bu komut, statik dosyalarınızı servis etmek için bir Node.js sunucusu başlatacaktır.
-
 5.  Tarayıcınızda `http://localhost:3000` adresine giderek uygulamaya erişebilirsiniz.
 
 ---
@@ -132,6 +96,6 @@ Projenin gelişimine katkıda bulunmak için pull request'lerinizi memnuniyetle 
 
 ---
 
-## 📄 Lisans
+## 📜 Lisans
 
 Bu proje **MIT Lisansı** altında lisanslanmıştır. Daha fazla bilgi için `LICENSE` dosyasına göz atın.
