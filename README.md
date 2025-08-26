@@ -3,10 +3,9 @@
   <h1>Yurt Destek Sistemi</h1>
   <p>Öğrenciler için şikayet ve arz bildirimi, yöneticiler için ise tüm talepleri yönetme paneli.</p>
   
-  [![GitHub Yıldızı](https://img.shields.io/github/stars/mustafaönler/YurtDestekSistemi?style=social)](https://github.com/KULLANICI_ADINIZ/YurtDestekSistemi/stargazers)
-  [![Lisans](https://img.shields.io/github/license/KULLANICI_ADINIZ/YurtDestekSistemi)](https://github.com/KULLANICI_ADINIZ/YurtDestekSistemi/blob/main/LICENSE)
+  [![GitHub Yıldızı](https://img.shields.io/github/stars/mustafaonler/YurtDestekSistemi?style=social)](https://github.com/mustafaonler/YurtDestekSistemi/stargazers)
+  [![Lisans](https://img.shields.io/github/license/mustafaonler/YurtDestekSistemi)](https://github.com/mustafaonler/YurtDestekSistemi/blob/main/LICENSE)
 </div>
-
 ---
 
 ## ✨ Proje Hakkında
